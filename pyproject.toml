@@ -1,6 +1,6 @@
 [project]
 name = "openmux"
-version = "0.1.6 alpha 1"
+version = "0.1.7"
 description = "A free multi-source GenAI orchestration library for automatic model selection and routing"
 readme = "README.md"
 requires-python = ">=3.9"
