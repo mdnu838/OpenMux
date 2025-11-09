@@ -40,17 +40,41 @@ jobs:
         uv pip install -e ".[dev,ci]"
         uv pip install pytest pytest-asyncio pytest-cov
 
+    - name: Create test environment file
+      run: |
+        echo "OPENROUTER_API_KEY=${{ secrets.OPENROUTER_API_KEY }}" > .env
+        echo "Environment file created for testing"
+      if: secrets.OPENROUTER_API_KEY != ''
+
     - name: Run unit tests
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         source .venv/bin/activate
         pytest tests/unit/ -v --tb=short
 
     - name: Run integration tests (mock-based)
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         source .venv/bin/activate
         pytest tests/integration/test_orchestrator_mock.py -v --tb=short
 
+    - name: Run integration tests (live - if API key available)
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+      run: |
+        source .venv/bin/activate
+        if [ -n "$OPENROUTER_API_KEY" ]; then
+          echo "Running live integration tests with OpenRouter..."
+          pytest tests/integration/test_end_to_end.py tests/integration/test_openrouter_live.py -v --tb=short || true
+        else
+          echo "Skipping live tests - no API key provided"
+        fi
+
     - name: Run tests with coverage
+      env:
+        OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       run: |
         source .venv/bin/activate
         pytest tests/unit/ tests/integration/test_orchestrator_mock.py \
