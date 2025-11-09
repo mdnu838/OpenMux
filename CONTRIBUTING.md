@@ -42,7 +42,7 @@ Thank you for your interest in contributing to OpenMux! This document provides g
 ### Setup Development Environment
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/openmux.git
+git clone https://github.com/mdnu838/openmux.git
 cd openmux
 
 # Create and activate virtual environment
