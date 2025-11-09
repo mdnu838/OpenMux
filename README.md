@@ -38,60 +38,69 @@ combined = orchestrator.process_multi(
 
 ## 🌟 Features
 
-Smart Model Selector is a unified interface for discovering, connecting, and using open-access models across the AI ecosystem. It automatically selects, routes, and combines outputs from free GenAI models and API providers.
-
-## Features
-
-- **Automatic Provider Discovery**
+- **🔍 Automatic Provider Discovery**
   - Maintains updated list of free GenAI model providers
   - Automatic metadata updates from central registry
   - Focus on free and open-source endpoints
 
-- **Task Auto-Classification**
+- **🎯 Task Auto-Classification**
   - Intelligent query analysis for task classification
-  - Supports: chat, code, tts, audio, embeddings, image
+  - Supports: chat, code, TTS, audio, embeddings, image
   - Lightweight local classifier with manual override options
 
-- **Model Auto-Selection**
-  - Smart model selection based on capability metadata
+- **⚡ Smart Model Selection**
+  - Automatic model selection based on capability metadata
   - Response quality tracking
   - Latency and uptime monitoring
   - Transparent selection reasoning
 
-- **Multi-Model Routing**
+- **🔀 Multi-Model Routing**
   - Parallel query processing across multiple models
   - Configurable response combination methods
   - Support for text and embeddings (multimodal planned)
 
-- **Offline & Local Fallback**
+- **💾 Offline & Local Fallback**
   - Local model hosting support via Ollama, LM Studio
   - Bundled lightweight open models
   - Hardware-aware automatic mode switching
   - Configurable fallback settings
 
-## Project Structure
+## 📁 Project Structure
 
 ```
-smart_model_selector/
-├── core/               # Core functionality
+openmux/
+├── core/               # Core orchestration
+│   ├── orchestrator.py # Main orchestrator
 │   ├── selector.py     # Model selection logic
-│   ├── router.py      # Query routing
-│   └── combiner.py    # Response combination
-├── providers/         # Provider implementations
-│   ├── base.py       # Base provider interface
-│   ├── openrouter.py # OpenRouter integration
-│   ├── huggingface.py # HuggingFace integration
-│   └── ollama.py     # Ollama integration
-├── classifier/        # Task classification
-│   ├── classifier.py # Main classifier
-│   └── models.py     # Classification models
-└── utils/            # Utility functions
-    ├── config.py     # Configuration management
-    ├── security.py   # Security utilities
-    └── logging.py    # Logging utilities
+│   ├── router.py       # Query routing
+│   ├── combiner.py     # Response combination
+│   └── fallback.py     # Fallback handling
+├── providers/          # Provider implementations
+│   ├── base.py         # Base provider interface
+│   ├── openrouter.py   # OpenRouter integration
+│   ├── huggingface.py  # HuggingFace integration
+│   ├── ollama.py       # Ollama integration
+│   └── registry.py     # Provider registry
+├── classifier/         # Task classification
+│   ├── classifier.py   # Main classifier
+│   └── task_types.py   # Task type definitions
+├── cli/                # Command-line interface
+│   └── main.py         # CLI implementation
+└── utils/              # Utility functions
+    ├── config.py       # Configuration management
+    └── logging.py      # Logging utilities
 ```
 
 ## 📦 Installation
+
+### From TestPyPI (Current)
+```bash
+# Using pip
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ openmux
+
+# Using uv (recommended)
+UV_HTTP_TIMEOUT=300 uv pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ openmux
+```
 
 ### From PyPI (Coming Soon)
 ```bash
@@ -100,11 +109,11 @@ pip install openmux
 uv pip install openmux
 ```
 
-### From Source (Current)
+### From Source
 ```bash
 # Clone the repository
-git clone https://github.com/mdnu838/openmux.git
-cd openmux
+git clone https://github.com/mdnu838/OpenMux.git
+cd OpenMux
 
 # Create virtual environment
 uv venv
@@ -191,12 +200,14 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 ## 📖 Documentation
 
-- [Contributing Guide](CONTRIBUTING.md) - How to contribute
-- [Architecture](docs/ARCHITECTURE.md) - System design
-- [API Documentation](docs/API.md) - Detailed API reference
-- [Testing Strategy](docs/TESTING_STRATEGY.md) - Testing guidelines
-- [MVP Tasks](docs/MVP_TASKS.md) - Development roadmap
-- [Test Results](TEST_RESULTS.md) - Current test status
+- [📘 Quick Reference](docs/QUICK_REFERENCE.md) - Common use cases
+- [🏗️ Architecture](docs/ARCHITECTURE.md) - System design
+- [🧪 Testing Strategy](docs/TESTING_STRATEGY.md) - Testing guidelines
+- [🤝 Contributing Guide](CONTRIBUTING.md) - How to contribute
+- [🚀 Development Guide](docs/DEVELOPMENT_GUIDE.md) - Developer setup
+- [📦 Publishing Guide](docs/PUBLISHING.md) - Release process
+- [📝 Test Results](docs/TEST_RESULTS.md) - Current test status
+- [📋 Project Definition](docs/PROJECT_DEFINITION.md) - Original requirements
 
 ---
 
@@ -204,43 +215,53 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
 - **Never commit API keys** or secrets to the repository
 - Use `.env` file for sensitive data (already in `.gitignore`)
-- Report security issues privately (see CONTRIBUTING.md)
+- Report security issues via GitHub Issues or contact maintainers
+
+See [SECURITY.md](SECURITY.md) for more details.
 
 ---
 
 ## 📊 Project Status
 
-**Current Version**: 0.1.0-alpha  
-**Branch**: mvp-alpha  
-**Test Coverage**: 100% (core components)  
-**Status**: Code-complete, ready for alpha testing
+**Current Version**: 0.1.0  
+**Status**: Alpha - Published to TestPyPI  
+**Test Coverage**: 100% (core components)
 
 ### Recent Updates
+- ✅ Published to TestPyPI
+- ✅ Fixed packaging to include all subpackages
 - ✅ Complete orchestration engine
 - ✅ Mock-based integration tests
 - ✅ Classifier fully functional
-- ✅ GitHub Actions CI/CD
+- ✅ GitHub Actions CI/CD workflows
 - ✅ Comprehensive documentation
 
-See [DEVELOPMENT_SUMMARY.md](DEVELOPMENT_SUMMARY.md) for detailed progress.
+See [CHANGELOG.md](CHANGELOG.md) for detailed version history.
 
 ---
 
-## Development
+## 🛠️ Development
 
-1. Clone the repository
-2. Set up the development environment:
+### Quick Setup
 ```bash
+# Clone the repository
+git clone https://github.com/mdnu838/OpenMux.git
+cd OpenMux
+
+# Set up the development environment
 uv venv
 source .venv/bin/activate
 uv pip install -e ".[dev]"
+
+# Run tests
+pytest tests/ -v
 ```
 
-## Contributing
-
-Contributions are welcome! Please read our contributing guidelines and code of conduct.
-
-**Important**: All feature changes require a separate branch and Pull Request to `main`.
+### Workflow
+1. All feature changes require a separate branch
+2. Create PR to `main` for review
+3. CI/CD automatically runs tests
+4. Merge to `main` triggers PyPI publish
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
 
