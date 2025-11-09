@@ -1,0 +1,180 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - mvp-alpha
+      - develop
+  pull_request:
+    branches:
+      - main
+      - mvp-alpha
+      - develop
+
+jobs:
+  test:
+    name: Test on Python ${{ matrix.python-version }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install dependencies
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install -e ".[dev]"
+        uv pip install pytest pytest-asyncio pytest-cov
+
+    - name: Run unit tests
+      run: |
+        source .venv/bin/activate
+        pytest tests/unit/ -v --tb=short
+
+    - name: Run integration tests (mock-based)
+      run: |
+        source .venv/bin/activate
+        pytest tests/integration/test_orchestrator_mock.py -v --tb=short
+
+    - name: Run tests with coverage
+      run: |
+        source .venv/bin/activate
+        pytest tests/unit/ tests/integration/test_orchestrator_mock.py \
+          --cov=opencascade \
+          --cov-report=xml \
+          --cov-report=term-missing
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v4
+      with:
+        file: ./coverage.xml
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
+
+  lint:
+    name: Lint and Format Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install linting tools
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install black ruff mypy
+
+    - name: Check code formatting with Black
+      run: |
+        source .venv/bin/activate
+        black --check opencascade/ tests/
+
+    - name: Lint with Ruff
+      run: |
+        source .venv/bin/activate
+        ruff check opencascade/ tests/
+
+    - name: Type check with mypy
+      run: |
+        source .venv/bin/activate
+        mypy opencascade/ --ignore-missing-imports || true
+
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install security tools
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install bandit safety
+
+    - name: Run Bandit security scan
+      run: |
+        source .venv/bin/activate
+        bandit -r opencascade/ -ll || true
+
+    - name: Check for known vulnerabilities
+      run: |
+        source .venv/bin/activate
+        uv pip freeze | safety check --stdin || true
+
+  build:
+    name: Build Package
+    runs-on: ubuntu-latest
+    needs: [test, lint]
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Build package
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install build
+        python -m build
+
+    - name: Verify package
+      run: |
+        source .venv/bin/activate
+        uv pip install dist/*.whl
+        python -c "import opencascade; print(opencascade.__version__)"
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-python-${{ github.sha }}
+        path: dist/
+        retention-days: 7
