@@ -1,6 +1,6 @@
-# Contributing to OpenCascade
+# Contributing to OpenMux
 
-Thank you for your interest in contributing to OpenCascade! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to OpenMux! This document provides guidelines and instructions for contributing.
 
 ---
 
@@ -42,8 +42,8 @@ Thank you for your interest in contributing to OpenCascade! This document provid
 ### Setup Development Environment
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/opencascade.git
-cd opencascade
+git clone https://github.com/yourusername/openmux.git
+cd openmux
 
 # Create and activate virtual environment
 uv venv
@@ -155,7 +155,7 @@ def test_new_feature():
 
 #### Implement Code
 ```python
-# opencascade/module/feature.py
+# openmux/module/feature.py
 def new_feature(input: str) -> str:
     """Implement the feature.
     
@@ -174,7 +174,7 @@ def new_feature(input: str) -> str:
 pytest tests/unit/test_module/test_feature.py -v
 
 # Run with coverage
-pytest --cov=opencascade.module.feature --cov-report=term
+pytest --cov=openmux.module.feature --cov-report=term
 
 # Debug if needed
 pytest -s --pdb
@@ -184,15 +184,15 @@ pytest -s --pdb
 
 ```bash
 # Format code
-black opencascade/ tests/
-isort opencascade/ tests/
+black openmux/ tests/
+isort openmux/ tests/
 
 # Lint code
-ruff check opencascade/
-mypy opencascade/
+ruff check openmux/
+mypy openmux/
 
 # Check test coverage
-pytest --cov=opencascade --cov-fail-under=90
+pytest --cov=openmux --cov-fail-under=90
 ```
 
 ### 5. Commit Changes
@@ -303,7 +303,7 @@ pytest tests/unit
 pytest tests/integration
 
 # Run with coverage
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 
 # Run in watch mode (requires pytest-watch)
 ptw
@@ -364,8 +364,8 @@ from pathlib import Path
 
 from typing import Optional, Dict, Any
 
-from opencascade.core import Base
-from opencascade.utils import logger
+from openmux.core import Base
+from openmux.utils import logger
 
 # 2. Constants
 MAX_RETRIES = 3
@@ -385,16 +385,16 @@ def my_function():
 ### Formatting Tools
 ```bash
 # Auto-format with black
-black opencascade/ tests/
+black openmux/ tests/
 
 # Sort imports with isort
-isort opencascade/ tests/
+isort openmux/ tests/
 
 # Lint with ruff
-ruff check opencascade/
+ruff check openmux/
 
 # Type check with mypy
-mypy opencascade/
+mypy openmux/
 ```
 
 ---
@@ -512,7 +512,7 @@ What actually happened
 **Environment**
 - OS: [e.g., macOS 14]
 - Python: [e.g., 3.11]
-- OpenCascade version: [e.g., 0.1.0]
+- OpenMux version: [e.g., 0.1.0]
 
 **Logs/Screenshots**
 Any relevant logs or screenshots
@@ -595,4 +595,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ## 🙏 Thank You!
 
-Thank you for contributing to OpenCascade! Your efforts help make this project better for everyone.
+Thank you for contributing to OpenMux! Your efforts help make this project better for everyone.

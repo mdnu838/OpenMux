@@ -52,7 +52,7 @@ class ModelSelectionLogger:
     
     def __init__(self, log_file: Optional[str] = None):
         self.logger = setup_logger(
-            "opencascade.model_selection",
+            "openmux.model_selection",
             log_file=log_file
         )
         
@@ -79,7 +79,7 @@ class BenchmarkLogger:
     
     def __init__(self, log_file: Optional[str] = None):
         self.logger = setup_logger(
-            "opencascade.benchmarks",
+            "openmux.benchmarks",
             log_file=log_file
         )
         

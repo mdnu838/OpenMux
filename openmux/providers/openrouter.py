@@ -70,7 +70,7 @@ class OpenRouterProvider(BaseProvider):
         headers = {
             "Content-Type": "application/json",
             "Authorization": f"Bearer {self.api_key}",
-            "HTTP-Referer": "https://github.com/mdnu838/opencascade",
+            "HTTP-Referer": "https://github.com/mdnu838/openmux",
             "X-Title": "OpenCascade"
         }
         

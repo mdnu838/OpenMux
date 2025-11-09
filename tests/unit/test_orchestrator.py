@@ -5,8 +5,8 @@ Unit tests for Orchestrator class.
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from opencascade.core.orchestrator import Orchestrator
-from opencascade.classifier.task_types import TaskType
+from openmux.core.orchestrator import Orchestrator
+from openmux.classifier.task_types import TaskType
 
 
 @pytest.fixture

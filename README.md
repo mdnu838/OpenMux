@@ -1,8 +1,8 @@
-# OpenCascade
+# OpenMux
 
 **Free Multi-Source GenAI Orchestration Library**
 
-OpenCascade is a Python library that automatically selects, routes, and combines outputs from free GenAI models and API providers. It creates a unified interface for discovering, connecting, and using open-access models across the AI ecosystem — including OpenRouter, HuggingFace, Together AI, Mistral, Ollama, LM Studio, and other publicly available sources.
+OpenMux is a Python library that automatically selects, routes, and combines outputs from free GenAI models and API providers. It creates a unified interface for discovering, connecting, and using open-access models across the AI ecosystem — including OpenRouter, HuggingFace, Together AI, Mistral, Ollama, LM Studio, and other publicly available sources.
 
 [![Python Version](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
@@ -13,7 +13,7 @@ OpenCascade is a Python library that automatically selects, routes, and combines
 ## 🚀 Quick Start
 
 ```python
-from opencascade import Orchestrator, TaskType
+from openmux import Orchestrator, TaskType
 
 # Initialize
 orchestrator = Orchestrator()
@@ -95,16 +95,16 @@ smart_model_selector/
 
 ### From PyPI (Coming Soon)
 ```bash
-pip install opencascade
+pip install openmux
 # or using uv
-uv pip install opencascade
+uv pip install openmux
 ```
 
 ### From Source (Current)
 ```bash
 # Clone the repository
-git clone https://github.com/mdnu838/opencascade.git
-cd opencascade
+git clone https://github.com/mdnu838/openmux.git
+cd openmux
 
 # Create virtual environment
 uv venv
@@ -147,7 +147,7 @@ pytest tests/ -v
 pytest tests/unit/ -v
 
 # Run with coverage
-pytest tests/ --cov=opencascade --cov-report=term-missing
+pytest tests/ --cov=openmux --cov-report=term-missing
 
 # Run mock-based tests (no API keys needed)
 pytest tests/unit/ tests/integration/test_orchestrator_mock.py -v
@@ -168,7 +168,7 @@ We welcome contributions! **All feature changes require a branch and Pull Reques
 3. **Make your changes** following our code style
 4. **Add tests** for new functionality
 5. **Run tests**: `pytest tests/ -v`
-6. **Format code**: `black opencascade/ tests/`
+6. **Format code**: `black openmux/ tests/`
 7. **Create Pull Request** to `main` branch
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.

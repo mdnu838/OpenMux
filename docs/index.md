@@ -1,6 +1,6 @@
-# OpenCascade Documentation Index
+# OpenMux Documentation Index
 
-Welcome to the OpenCascade documentation! This index will help you find the information you need.
+Welcome to the OpenMux documentation! This index will help you find the information you need.
 
 ---
 
@@ -16,9 +16,9 @@ Welcome to the OpenCascade documentation! This index will help you find the info
 ## 🎯 For Users
 
 ### Getting Started
-- **[Installation Guide](installation.md)** - How to install OpenCascade
+- **[Installation Guide](installation.md)** - How to install OpenMux
 - **[Quick Start](getting_started.md)** - Get up and running quickly
-- **[Configuration Guide](configuration.md)** - Configure OpenCascade for your needs
+- **[Configuration Guide](configuration.md)** - Configure OpenMux for your needs
 
 ### Usage Documentation
 - **[API Reference](api_reference.md)** - Complete API documentation
@@ -28,7 +28,7 @@ Welcome to the OpenCascade documentation! This index will help you find the info
 
 ### Advanced Topics
 - **[Benchmarking](benchmarking.md)** - Performance testing and optimization
-- **[Offline Mode](offline_mode.md)** - Using OpenCascade offline
+- **[Offline Mode](offline_mode.md)** - Using OpenMux offline
 - **[Custom Providers](custom_providers.md)** - Creating custom providers
 
 ---

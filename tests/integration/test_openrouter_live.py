@@ -6,8 +6,8 @@ import os
 import pytest
 from dotenv import load_dotenv
 
-from opencascade.providers.openrouter import OpenRouterProvider
-from opencascade.classifier.task_types import TaskType
+from openmux.providers.openrouter import OpenRouterProvider
+from openmux.classifier.task_types import TaskType
 
 
 # Load environment variables

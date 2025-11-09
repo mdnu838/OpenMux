@@ -1,4 +1,4 @@
-# OpenCascade - Quick Reference
+# OpenMux - Quick Reference
 
 Quick reference for common tasks and commands.
 
@@ -8,8 +8,8 @@ Quick reference for common tasks and commands.
 
 ```bash
 # Clone and setup
-git clone https://github.com/yourusername/opencascade.git
-cd opencascade
+git clone https://github.com/yourusername/openmux.git
+cd openmux
 uv venv
 source .venv/bin/activate
 uv pip install -e ".[dev]"
@@ -27,7 +27,7 @@ pytest
 pytest tests/unit
 
 # Run with coverage
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 
 # Run specific test
 pytest tests/unit/test_orchestrator.py -v
@@ -45,12 +45,12 @@ ptw
 
 ```bash
 # Format code
-black opencascade/ tests/
-isort opencascade/ tests/
+black openmux/ tests/
+isort openmux/ tests/
 
 # Lint
-ruff check opencascade/
-mypy opencascade/
+ruff check openmux/
+mypy openmux/
 
 # Run all checks
 ./scripts/check_all.sh
@@ -105,7 +105,7 @@ find . -type d -name __pycache__ -exec rm -rf {} +
 rm -rf .pytest_cache .coverage htmlcov
 
 # Generate coverage report
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 open htmlcov/index.html
 ```
 
@@ -136,7 +136,7 @@ pytest -s
 pytest --pdb
 
 # View logs
-tail -f logs/opencascade.log
+tail -f logs/openmux.log
 
 # Check specific module
 pytest tests/unit/test_module.py -v -s
@@ -161,13 +161,13 @@ python -m pstats profile.stats
 
 ```bash
 # Find function definition
-grep -r "def function_name" opencascade/
+grep -r "def function_name" openmux/
 
 # Find test
 grep -r "test_feature" tests/
 
 # Find TODO comments
-grep -r "TODO" opencascade/
+grep -r "TODO" openmux/
 ```
 
 ---
@@ -182,7 +182,7 @@ python -m build
 pip install -e .
 
 # Uninstall
-pip uninstall opencascade
+pip uninstall openmux
 ```
 
 ---

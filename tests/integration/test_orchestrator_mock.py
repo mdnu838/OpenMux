@@ -6,8 +6,8 @@ Tests the orchestration logic without requiring live API keys.
 import pytest
 from unittest.mock import AsyncMock, MagicMock, patch
 
-from opencascade import Orchestrator, TaskType
-from opencascade.providers.base import BaseProvider
+from openmux import Orchestrator, TaskType
+from openmux.providers.base import BaseProvider
 
 
 class MockProvider(BaseProvider):
@@ -33,7 +33,7 @@ class MockProvider(BaseProvider):
 @pytest.fixture
 def mock_registry():
     """Create a mock provider registry."""
-    with patch('opencascade.core.orchestrator.ProviderRegistry') as MockRegistry:
+    with patch('openmux.core.orchestrator.ProviderRegistry') as MockRegistry:
         registry = MagicMock()
         mock_provider = MockProvider(name="test_provider")
         registry.get_all_available.return_value = [mock_provider]
@@ -69,7 +69,7 @@ async def test_orchestrator_with_task_type_mock(mock_registry):
 @pytest.mark.asyncio
 async def test_orchestrator_multi_model_mock():
     """Test orchestrator with multiple mock providers."""
-    with patch('opencascade.core.orchestrator.ProviderRegistry') as MockRegistry:
+    with patch('openmux.core.orchestrator.ProviderRegistry') as MockRegistry:
         registry = MagicMock()
         providers = [
             MockProvider(name="provider1"),
@@ -93,7 +93,7 @@ async def test_orchestrator_multi_model_mock():
 @pytest.mark.asyncio
 async def test_selector_integration():
     """Test that selector correctly chooses providers."""
-    from opencascade.core.selector import ModelSelector
+    from openmux.core.selector import ModelSelector
     
     provider1 = MockProvider(name="fast_provider")
     provider2 = MockProvider(name="smart_provider")
@@ -113,7 +113,7 @@ async def test_selector_integration():
 @pytest.mark.asyncio
 async def test_router_integration():
     """Test that router correctly routes requests to providers."""
-    from opencascade.core.router import Router
+    from openmux.core.router import Router
     
     provider = MockProvider(name="test_provider")
     router = Router()
@@ -154,7 +154,7 @@ async def test_fallback_behavior_mock():
         async def generate(self, prompt: str, task_type=None, **kwargs) -> str:
             return f"Fallback response: {prompt}"
     
-    with patch('opencascade.core.orchestrator.ProviderRegistry') as MockRegistry:
+    with patch('openmux.core.orchestrator.ProviderRegistry') as MockRegistry:
         registry = MagicMock()
         failing = FailingProvider()
         working = WorkingProvider()

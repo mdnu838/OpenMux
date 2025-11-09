@@ -6,7 +6,7 @@ import os
 import pytest
 from dotenv import load_dotenv
 
-from opencascade import Orchestrator, TaskType
+from openmux import Orchestrator, TaskType
 
 
 # Load environment variables

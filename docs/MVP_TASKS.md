@@ -1,4 +1,4 @@
-# OpenCascade MVP - Alpha Version Task List
+# OpenMux MVP - Alpha Version Task List
 
 **Target**: First stable alpha release with core functionality  
 **Branch**: `mvp-alpha`  
@@ -36,7 +36,7 @@ The MVP will include:
 - [x] Documentation
 
 **Files Created**:
-- `opencascade/utils/config.py` ✅
+- `openmux/utils/config.py` ✅
 - `config/default_config.json` ✅
 
 **Status**: ✅ COMPLETED
@@ -57,7 +57,7 @@ The MVP will include:
 - [x] Documentation
 
 **Files Created**:
-- `opencascade/utils/logging.py` ✅
+- `openmux/utils/logging.py` ✅
 
 **Status**: ✅ COMPLETED
 
@@ -66,29 +66,29 @@ The MVP will include:
 ### Phase 2: Provider System
 
 #### Task 2.1: Base Provider Interface ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/providers/base.py` created
+**Status**: ✅ COMPLETED - `openmux/providers/base.py` created
 
 #### Task 2.2: HuggingFace Provider ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/providers/huggingface.py` created with Inference API support
+**Status**: ✅ COMPLETED - `openmux/providers/huggingface.py` created with Inference API support
 
 #### Task 2.3: OpenRouter Provider ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/providers/openrouter.py` created
+**Status**: ✅ COMPLETED - `openmux/providers/openrouter.py` created
 
 #### Task 2.4: Ollama Provider ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/providers/ollama.py` created with local support
+**Status**: ✅ COMPLETED - `openmux/providers/ollama.py` created with local support
 
 #### Task 2.5: Models Registry ✅ COMPLETED
-**Status**: ✅ COMPLETED - `config/models.json` and `opencascade/providers/registry.py` created
+**Status**: ✅ COMPLETED - `config/models.json` and `openmux/providers/registry.py` created
 
 ---
 
 ### Phase 3: Task Classification
 
 #### Task 3.1: Task Type Definitions ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/classifier/task_types.py` created
+**Status**: ✅ COMPLETED - `openmux/classifier/task_types.py` created
 
 #### Task 3.2: Rule-Based Classifier ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/classifier/classifier.py` created, all tests passing (6/6)
+**Status**: ✅ COMPLETED - `openmux/classifier/classifier.py` created, all tests passing (6/6)
 
 #### Task 3.3: Classifier Interface ✅ COMPLETED
 **Status**: ✅ COMPLETED - Unified interface implemented
@@ -98,29 +98,29 @@ The MVP will include:
 ### Phase 4: Core Orchestration
 
 #### Task 4.1: Model Selector ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/core/selector.py` created
+**Status**: ✅ COMPLETED - `openmux/core/selector.py` created
 
 #### Task 4.2: Query Router ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/core/router.py` created with async routing
+**Status**: ✅ COMPLETED - `openmux/core/router.py` created with async routing
 
 #### Task 4.3: Response Combiner ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/core/combiner.py` created
+**Status**: ✅ COMPLETED - `openmux/core/combiner.py` created
 
 #### Task 4.4: Fallback Handler ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/core/fallback.py` created
+**Status**: ✅ COMPLETED - `openmux/core/fallback.py` created
 
 #### Task 4.5: Main Orchestrator ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/core/orchestrator.py` updated with full implementation
+**Status**: ✅ COMPLETED - `openmux/core/orchestrator.py` updated with full implementation
 
 ---
 
 ### Phase 5: CLI & Python API
 
 #### Task 5.1: Python API ✅ COMPLETED
-**Status**: ✅ COMPLETED - Clean API exposed through `opencascade/__init__.py`
+**Status**: ✅ COMPLETED - Clean API exposed through `openmux/__init__.py`
 
 #### Task 5.2: CLI Implementation ✅ COMPLETED
-**Status**: ✅ COMPLETED - `opencascade/cli/main.py` created with typer
+**Status**: ✅ COMPLETED - `openmux/cli/main.py` created with typer
 
 ---
 
@@ -176,10 +176,10 @@ The MVP will include:
 **Validation**:
 ```bash
 pytest tests/ -v
-pytest --cov=opencascade --cov-fail-under=90
-black --check opencascade/
-ruff check opencascade/
-mypy opencascade/
+pytest --cov=openmux --cov-fail-under=90
+black --check openmux/
+ruff check openmux/
+mypy openmux/
 ```
 
 **Status**: ⏳ PENDING

@@ -23,7 +23,7 @@ class Config:
     @staticmethod
     def _default_config_path() -> Path:
         """Get default configuration path."""
-        return Path.home() / ".opencascade" / "config.json"
+        return Path.home() / ".openmux" / "config.json"
     
     def _ensure_config_dir(self) -> None:
         """Ensure configuration directory exists."""
@@ -31,10 +31,10 @@ class Config:
     
     def _init_encryption(self) -> None:
         """Initialize encryption key."""
-        key = keyring.get_password("opencascade", "encryption_key")
+        key = keyring.get_password("openmux", "encryption_key")
         if not key:
             key = Fernet.generate_key().decode()
-            keyring.set_password("opencascade", "encryption_key", key)
+            keyring.set_password("openmux", "encryption_key", key)
         self.fernet = Fernet(key.encode())
     
     def load(self) -> Dict[str, Any]:

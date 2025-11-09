@@ -1,6 +1,6 @@
-# OpenCascade - Detailed Project Structure
+# OpenMux - Detailed Project Structure
 
-## Project Name: OpenCascade
+## Project Name: OpenMux
 **Tagline:** Free Multi-Source GenAI Orchestration Library
 
 ---
@@ -8,9 +8,9 @@
 ## 📁 Complete Folder Structure
 
 ```
-OpenCascade/
+OpenMux/
 │
-├── opencascade/                      # Main package directory
+├── openmux/                      # Main package directory
 │   ├── __init__.py                   # Package initialization
 │   │
 │   ├── core/                         # Core orchestration logic

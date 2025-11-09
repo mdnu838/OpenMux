@@ -80,6 +80,6 @@ pytest tests/integration/test_orchestrator_mock.py -v
 **Before submitting:**
 1. Ensure your branch is up to date with the target branch
 2. Run `pytest tests/ -v` locally
-3. Run `black opencascade/ tests/` to format code
-4. Run `ruff check opencascade/ tests/` to lint
+3. Run `black openmux/ tests/` to format code
+4. Run `ruff check openmux/ tests/` to lint
 5. Update documentation if needed

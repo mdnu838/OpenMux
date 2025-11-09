@@ -4,8 +4,8 @@ Unit tests for TaskClassifier.
 
 import pytest
 
-from opencascade.classifier.classifier import TaskClassifier
-from opencascade.classifier.task_types import TaskType
+from openmux.classifier.classifier import TaskClassifier
+from openmux.classifier.task_types import TaskType
 
 
 @pytest.fixture

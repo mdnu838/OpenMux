@@ -2,7 +2,7 @@
 
 import pytest
 import asyncio
-from opencascade.providers.openrouter import OpenRouterProvider
+from openmux.providers.openrouter import OpenRouterProvider
 
 @pytest.mark.asyncio
 async def test_openrouter_initialization():

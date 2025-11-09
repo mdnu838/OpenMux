@@ -81,7 +81,7 @@ Once uploaded, you can verify the workflow:
 After the workflow is active, add this badge to your README:
 
 ```markdown
-[![CI/CD](https://github.com/mdnu838/opencascade/actions/workflows/ci.yml/badge.svg)](https://github.com/mdnu838/opencascade/actions/workflows/ci.yml)
+[![CI/CD](https://github.com/mdnu838/openmux/actions/workflows/ci.yml/badge.svg)](https://github.com/mdnu838/openmux/actions/workflows/ci.yml)
 ```
 
 ---

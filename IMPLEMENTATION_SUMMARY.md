@@ -1,4 +1,4 @@
-# OpenCascade MVP Alpha - Implementation Summary
+# OpenMux MVP Alpha - Implementation Summary
 
 ## ✅ Completed (2024)
 
@@ -9,7 +9,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 ## 📦 Core Components Implemented
 
 ### 1. Orchestration Layer
-- **Orchestrator** (`opencascade/core/orchestrator.py`)
+- **Orchestrator** (`openmux/core/orchestrator.py`)
   - Main entry point for all operations
   - Single model processing: `process()`
   - Multi-model processing: `process_multi()`
@@ -17,14 +17,14 @@ This document summarizes the MVP alpha implementation that was just completed an
   - Async architecture throughout
 
 ### 2. Model Selection
-- **ModelSelector** (`opencascade/core/selector.py`)
+- **ModelSelector** (`openmux/core/selector.py`)
   - `select_single()`: Choose best model for task
   - `select_multiple()`: Select multiple models for comparison
   - Task type filtering
   - Provider ranking logic
 
 ### 3. Query Routing
-- **Router** (`opencascade/core/router.py`)
+- **Router** (`openmux/core/router.py`)
   - Async single routing with `route_single()`
   - Parallel multi-routing with `route_multiple()`
   - Exponential backoff retry logic
@@ -32,12 +32,12 @@ This document summarizes the MVP alpha implementation that was just completed an
   - Error recovery
 
 ### 4. Response Combining
-- **Combiner** (`opencascade/core/combiner.py`)
+- **Combiner** (`openmux/core/combiner.py`)
   - `merge()`: Concatenate responses with separators
   - `summarize()`: Basic summarization (MVP implementation)
 
 ### 5. Fallback Handling
-- **FallbackHandler** (`opencascade/core/fallback.py`)
+- **FallbackHandler** (`openmux/core/fallback.py`)
   - Automatic Ollama fallback
   - `has_fallback()`: Check availability
   - `fallback()`: Execute fallback query
@@ -47,7 +47,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 ## 🔌 Providers Implemented
 
 ### 1. HuggingFace Provider
-- **File**: `opencascade/providers/huggingface.py`
+- **File**: `openmux/providers/huggingface.py`
 - **Features**:
   - Free Inference API integration
   - Support for chat, code, and embeddings
@@ -59,7 +59,7 @@ This document summarizes the MVP alpha implementation that was just completed an
   - Configurable via `HF_TOKEN` environment variable
 
 ### 2. OpenRouter Provider
-- **File**: `opencascade/providers/openrouter.py`
+- **File**: `openmux/providers/openrouter.py`
 - **Features**:
   - OpenRouter API integration
   - Free tier model support
@@ -67,7 +67,7 @@ This document summarizes the MVP alpha implementation that was just completed an
   - Configurable via `OPENROUTER_API_KEY`
 
 ### 3. Ollama Provider
-- **File**: `opencascade/providers/ollama.py`
+- **File**: `openmux/providers/ollama.py`
 - **Features**:
   - Local offline AI support
   - Default model: `llama2`
@@ -76,7 +76,7 @@ This document summarizes the MVP alpha implementation that was just completed an
   - Perfect for fallback scenarios
 
 ### 4. Provider Registry
-- **File**: `opencascade/providers/registry.py`
+- **File**: `openmux/providers/registry.py`
 - **Features**:
   - Centralized provider management
   - Auto-initialization of all providers
@@ -88,7 +88,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 ## 🤖 Task Classification
 
 ### TaskType Enum
-- **File**: `opencascade/classifier/task_types.py`
+- **File**: `openmux/classifier/task_types.py`
 - **Types**: 
   - `CHAT`: General conversation
   - `CODE`: Code generation/debugging
@@ -96,7 +96,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 - **Utility**: `from_string()` method for parsing
 
 ### TaskClassifier
-- **File**: `opencascade/classifier/classifier.py`
+- **File**: `openmux/classifier/classifier.py`
 - **Features**:
   - Rule-based classification
   - Pattern matching for code keywords
@@ -155,7 +155,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 ## 🖥️ CLI
 
 ### Command-Line Interface
-- **File**: `opencascade/cli/main.py`
+- **File**: `openmux/cli/main.py`
 - **Commands**:
   - `query`: Process queries from command line
   - `providers`: List available providers
@@ -184,7 +184,7 @@ This document summarizes the MVP alpha implementation that was just completed an
 ## 🏗️ Project Structure
 
 ```
-opencascade/
+openmux/
 ├── __init__.py              # Package entry, version 0.1.0-alpha
 ├── classifier/              
 │   ├── __init__.py
@@ -310,7 +310,7 @@ tests/
 
 ## 🔗 Repository
 
-- **GitHub**: https://github.com/mdnu838/opencascade
+- **GitHub**: https://github.com/mdnu838/openmux
 - **Branch**: mvp-alpha
 - **Main Branch**: main (documentation only)
 
@@ -319,7 +319,7 @@ tests/
 ## 💡 Usage Example
 
 ```python
-from opencascade import Orchestrator, TaskType
+from openmux import Orchestrator, TaskType
 
 # Initialize
 orchestrator = Orchestrator()

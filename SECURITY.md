@@ -27,7 +27,7 @@ When reporting a vulnerability, please include:
 - **Proof of Concept**: Code or example demonstrating the vulnerability
 - **Suggested Fix**: If you have one (optional)
 - **Environment**: 
-  - OpenCascade version
+  - OpenMux version
   - Python version
   - Operating system
 
@@ -52,7 +52,7 @@ When reporting a vulnerability, please include:
 
 2. **Keep dependencies updated**:
    ```bash
-   uv pip install --upgrade opencascade
+   uv pip install --upgrade openmux
    ```
 
 3. **Use environment variables**:
@@ -64,7 +64,7 @@ When reporting a vulnerability, please include:
 
 4. **Validate inputs**:
    ```python
-   from opencascade import Orchestrator
+   from openmux import Orchestrator
    
    # Validate user input before processing
    if len(user_query) > 10000:
@@ -102,7 +102,7 @@ When reporting a vulnerability, please include:
 4. **Run security checks**:
    ```bash
    # Static security analysis
-   bandit -r opencascade/ -ll
+   bandit -r openmux/ -ll
    ```
 
 5. **Follow secure coding practices**:
