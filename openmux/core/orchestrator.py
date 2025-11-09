@@ -52,6 +52,25 @@ class Orchestrator:
         
         logger.info("Orchestrator initialized")
     
+    def __enter__(self):
+        """Context manager entry."""
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit - cleanup resources."""
+        self.cleanup()
+        return False
+    
+    def cleanup(self):
+        """Cleanup resources (close provider sessions)."""
+        # Close all provider sessions
+        for provider in self.registry.get_all_available():
+            if hasattr(provider, '_session') and provider._session:
+                try:
+                    asyncio.run(provider._session.close())
+                except Exception as e:
+                    logger.warning(f"Error closing provider session: {e}")
+    
     def _initialize_selector(self):
         """Initialize model selector with available providers."""
         if self.selector is None:

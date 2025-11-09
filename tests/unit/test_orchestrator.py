@@ -40,8 +40,8 @@ async def test_process_simple_query(orchestrator):
         orchestrator.selector.select_single.return_value = mock_provider
         
         # Mock router
-        with patch.object(orchestrator.router, 'route_single', return_value="Test response"):
-            result = orchestrator.process("What is Python?")
+        with patch.object(orchestrator.router, 'route_single', new=AsyncMock(return_value="Test response")):
+            result = await orchestrator._process_async("What is Python?")
             
             assert result == "Test response"
 
@@ -58,8 +58,8 @@ async def test_process_with_task_type(orchestrator):
         orchestrator.selector = MagicMock()
         orchestrator.selector.select_single.return_value = mock_provider
         
-        with patch.object(orchestrator.router, 'route_single', return_value="Code response"):
-            result = orchestrator.process(
+        with patch.object(orchestrator.router, 'route_single', new=AsyncMock(return_value="Code response")):
+            result = await orchestrator._process_async(
                 "Write a function",
                 task_type=TaskType.CODE
             )
@@ -82,9 +82,9 @@ async def test_process_multi(orchestrator):
         orchestrator.selector = MagicMock()
         orchestrator.selector.select_multiple.return_value = [mock_provider1, mock_provider2]
         
-        with patch.object(orchestrator.router, 'route_multiple', return_value=["Response 1", "Response 2"]):
+        with patch.object(orchestrator.router, 'route_multiple', new=AsyncMock(return_value=["Response 1", "Response 2"])):
             with patch.object(orchestrator.combiner, 'merge', return_value="Combined response"):
-                result = orchestrator.process_multi(
+                result = await orchestrator._process_multi_async(
                     "Test query",
                     num_models=2,
                     combination_method="merge"
@@ -111,8 +111,8 @@ async def test_fallback_handling(orchestrator):
         with patch.object(orchestrator, '_initialize_fallback'):
             orchestrator.fallback = mock_fallback
             
-            with patch.object(orchestrator.router, 'route_single', side_effect=Exception("Provider failed")):
-                result = orchestrator.process("Test query", fallback_enabled=True)
+            with patch.object(orchestrator.router, 'route_single', new=AsyncMock(side_effect=Exception("Provider failed"))):
+                result = await orchestrator._process_async("Test query", fallback_enabled=True)
                 
                 assert result == "Fallback response"
 
@@ -125,4 +125,4 @@ async def test_no_provider_available(orchestrator):
         orchestrator.selector.select_single.return_value = None
         
         with pytest.raises(Exception, match="No provider available"):
-            orchestrator.process("Test query")
+            await orchestrator._process_async("Test query")
