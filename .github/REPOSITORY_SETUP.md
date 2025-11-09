@@ -2,6 +2,31 @@
 
 This guide will help you configure the OpenMux repository settings on GitHub.
 
+## 🔒 Branch Protection Strategy
+
+```
+┌─────────────┐
+│  feature/*  │  (Feature branches)
+│   fix/*     │
+│   docs/*    │
+└──────┬──────┘
+       │ PR (reviewed)
+       ▼
+┌─────────────┐      Auto-publish      ┌──────────────┐
+│   develop   │ ──────────────────────►│  TestPyPI    │
+└──────┬──────┘   (on push to develop) └──────────────┘
+       │ PR (reviewed, tested)
+       │ ❌ DIRECT PUSH DISABLED
+       ▼
+┌─────────────┐      Auto-publish      ┌──────────────┐
+│    main     │ ──────────────────────►│     PyPI     │
+│ (PROTECTED) │   (on push to main)    │ + Release    │
+└─────────────┘                         └──────────────┘
+    ↑
+    │ ONLY accepts PRs from develop
+    │ Direct pushes: BLOCKED
+```
+
 ## 🎯 Quick Setup Checklist
 
 - [ ] Set `main` as default branch
@@ -59,7 +84,14 @@ This guide will help you configure the OpenMux repository settings on GitHub.
 
 - ☑ **Require conversation resolution before merging**
 
+- ☑ **Restrict who can push to matching branches**
+  - Add: No one (this prevents direct pushes entirely)
+  - Note: This forces all changes to come via PRs from `develop` branch
+
 - ☑ **Do not allow bypassing the above settings** (even for admins)
+
+- ☑ **Lock branch** (optional, for maximum protection)
+  - This makes the branch read-only except via PRs
 
 **⚠️ Optional (Recommended):**
 - ☑ Require linear history (clean commit history)
@@ -123,12 +155,24 @@ git checkout main
 echo "test" >> test.txt
 git add test.txt
 git commit -m "test direct push"
-git push origin main  # Should be rejected
+git push origin main  
+# ❌ Should be rejected with:
+# "refusing to allow a personal access token to push to a protected branch"
+# or "protected branch hook declined"
 ```
 
 Clean up:
 ```bash
 git reset --hard HEAD~1
+```
+
+### 5.3 Verify PR-Only Access
+```bash
+# The ONLY way to update main is:
+# 1. Create branch from develop
+# 2. Make changes
+# 3. PR to develop
+# 4. After testing, PR from develop to main
 ```
 
 ---
@@ -153,23 +197,43 @@ git reset --hard HEAD~1
 
 ## 7. Quick Command Reference
 
-### Working with the new branch structure:
+### Working with the protected branch structure:
 
 ```bash
-# Start new feature
+# 1. Create feature branch from develop
 git checkout develop
 git pull origin develop
 git checkout -b feature/my-new-feature
 
-# ... make changes ...
+# 2. Make changes and commit
 git add .
 git commit -m "feat: Add new feature"
 git push origin feature/my-new-feature
 
-# Create PR on GitHub: feature/my-new-feature → develop
+# 3. Create PR on GitHub: feature/my-new-feature → develop
+#    After review and merge to develop
 
-# After PR is merged to develop, create release PR
-# develop → main (triggers deployment)
+# 4. Test on develop (auto-publishes to TestPyPI)
+#    Verify everything works
+
+# 5. Create PR on GitHub: develop → main
+#    After review and merge to main
+#    Auto-publishes to PyPI + creates GitHub Release
+```
+
+### ❌ This will FAIL (direct push blocked):
+```bash
+git checkout main
+git push origin main  # ❌ ERROR: Protected branch
+```
+
+### ✅ This is the CORRECT way:
+```bash
+# Always go through develop
+git checkout develop
+git pull origin develop
+# ... make changes via feature branches ...
+# Create PR: feature → develop → main
 ```
 
 ### Update local repository:
@@ -191,8 +255,8 @@ git pull origin develop
 ## 8. Current Branch Structure
 
 ```
-main (default, protected)
-├── develop (integration branch)
+main (default, protected, PR-only from develop)
+├── develop (integration branch, accepts PRs from features)
 │   ├── feature/your-feature
 │   ├── fix/bug-fix
 │   ├── docs/documentation
@@ -201,6 +265,30 @@ main (default, protected)
     ├── mvp-alpha (can be deleted)
     └── docs-and-structure-update (can be deleted after merge)
 ```
+
+### Branch Flow Rules
+
+**Strict Workflow:**
+```
+feature/* → (PR) → develop → (PR) → main
+fix/*     → (PR) → develop → (PR) → main
+docs/*    → (PR) → develop → (PR) → main
+chore/*   → (PR) → develop → (PR) → main
+```
+
+**Important:**
+- ❌ **Direct pushes to `main` are DISABLED**
+- ✅ Only PRs from `develop` branch can merge to `main`
+- ✅ All feature work goes to `develop` first
+- ✅ `develop` is tested on TestPyPI before merging to `main`
+- ✅ `main` publishes to production PyPI
+
+### Why This Workflow?
+
+1. **Quality Control**: All code reviewed twice (feature→develop, develop→main)
+2. **Testing**: Features tested on TestPyPI before production
+3. **Stability**: Main branch always production-ready
+4. **Rollback**: Easy to revert develop without affecting production
 
 ---
 
