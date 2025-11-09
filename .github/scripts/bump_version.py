@@ -14,18 +14,25 @@ def update_version_in_file(file_path: Path, old_version: str, new_version: str) 
     try:
         content = file_path.read_text()
         
-        # Try different version patterns
+        # Extract base version without suffix (e.g., "0.1.0-alpha" -> "0.1.0")
+        base_old_version = old_version.split('-')[0]
+        base_new_version = new_version.split('-')[0]
+        
+        # Use regex to handle version with optional suffixes
         patterns = [
-            (f'version = "{old_version}"', f'version = "{new_version}"'),
-            (f"version = '{old_version}'", f"version = '{new_version}'"),
-            (f'__version__ = "{old_version}"', f'__version__ = "{new_version}"'),
-            (f"__version__ = '{old_version}'", f"__version__ = '{new_version}'"),
+            # For pyproject.toml: version = "x.y.z" or version = 'x.y.z'
+            (re.compile(rf'(version\s*=\s*["\']){re.escape(old_version)}(["\'])'), 
+             rf'\g<1>{new_version}\g<2>'),
+            # For __init__.py: __version__ = "x.y.z" or __version__ = 'x.y.z' (with optional suffix)
+            (re.compile(rf'(__version__\s*=\s*["\']){re.escape(base_old_version)}(-[a-zA-Z0-9]+)?(["\'])'), 
+             rf'\g<1>{base_new_version}\g<3>'),
         ]
         
         updated = False
-        for old_pattern, new_pattern in patterns:
-            if old_pattern in content:
-                content = content.replace(old_pattern, new_pattern)
+        for pattern, replacement in patterns:
+            new_content, count = pattern.subn(replacement, content)
+            if count > 0:
+                content = new_content
                 updated = True
         
         if updated:
@@ -66,15 +73,16 @@ def main():
     current_version = get_current_version(pyproject_path)
     print(f"Current version: {current_version}")
     
-    # Parse version
-    parts = current_version.split(".")
+    # Parse version (handle suffixes like -alpha, -beta)
+    base_version = current_version.split('-')[0]
+    parts = base_version.split(".")
     if len(parts) != 3:
         print(f"✗ Invalid version format: {current_version}")
         sys.exit(1)
     
     major, minor, _ = parts
     
-    # Create new version with run number as patch
+    # Create new version with run number as patch (no suffix for CI builds)
     new_version = f"{major}.{minor}.{run_number}"
     print(f"New version: {new_version}")
     

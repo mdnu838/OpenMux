@@ -1,5 +1,5 @@
 """
-OpenCascade - Free Multi-Source GenAI Orchestration Library
+OpenMux - Free Multi-Source GenAI Orchestration Library
 
 A Python library for automatic model selection and routing across free GenAI providers.
 """
@@ -7,11 +7,11 @@ A Python library for automatic model selection and routing across free GenAI pro
 from .core.orchestrator import Orchestrator
 from .classifier.task_types import TaskType
 
-__version__ = "0.1.0-alpha"
-__author__ = "OpenCascade Contributors"
+__version__ = "0.1.0"
+__author__ = "OpenMux Contributors"
 __all__ = ["Orchestrator", "TaskType"]
 
 
 def get_version():
-    """Get the current version of OpenCascade."""
+    """Get the current version of OpenMux."""
     return __version__
