@@ -128,9 +128,13 @@ async def test_fallback_handling(orchestrator):
 @pytest.mark.asyncio
 async def test_no_provider_available(orchestrator):
     """Test error handling when no provider is available."""
+    from openmux.utils.exceptions import NoProvidersAvailableError
+    
     with patch.object(orchestrator, '_initialize_selector'):
         orchestrator.selector = MagicMock()
         orchestrator.selector.select_with_fallbacks.return_value = []
+        orchestrator._initialize_fallback()
+        orchestrator.fallback = None  # Disable fallback for this test
         
-        with pytest.raises(Exception, match="No provider available"):
+        with pytest.raises(NoProvidersAvailableError, match="No providers available"):
             await orchestrator._process_async("Test query")

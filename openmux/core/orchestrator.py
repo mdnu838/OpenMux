@@ -13,6 +13,7 @@ from ..providers.base import BaseProvider
 from ..providers.registry import ProviderRegistry
 from ..utils.config import Config
 from ..utils.logging import setup_logger
+from ..utils.exceptions import NoProvidersAvailableError
 from .selector import ModelSelector
 from .router import Router
 from .combiner import Combiner
@@ -138,7 +139,11 @@ class Orchestrator:
                 )
                 
                 if not providers:
-                    raise Exception(f"No provider available for task: {task_type}")
+                    available = [p.name for p in self.registry.get_all_available()]
+                    raise NoProvidersAvailableError(
+                        task_type=str(task_type),
+                        available_providers=available
+                    )
                 
                 # Try providers with automatic failover
                 response, provider_name = await self.router.route_with_failover(
@@ -151,7 +156,11 @@ class Orchestrator:
                 provider = self.selector.select_single(task_type)
                 
                 if provider is None:
-                    raise Exception(f"No provider available for task: {task_type}")
+                    available = [p.name for p in self.registry.get_all_available()]
+                    raise NoProvidersAvailableError(
+                        task_type=str(task_type),
+                        available_providers=available
+                    )
                 
                 # Route query to provider
                 response = await self.router.route_single(provider, query, **kwargs)
@@ -231,13 +240,20 @@ class Orchestrator:
         providers = self.selector.select_multiple(task_type, num_models)
         
         if not providers:
-            raise Exception(f"No providers available for task: {task_type}")
+            available = [p.name for p in self.registry.get_all_available()]
+            raise NoProvidersAvailableError(
+                task_type=str(task_type),
+                available_providers=available
+            )
         
         # Route to multiple providers
         responses = await self.router.route_multiple(providers, query, **kwargs)
         
         if not responses:
-            raise Exception("No valid responses received from providers")
+            raise NoProvidersAvailableError(
+                task_type=str(task_type),
+                available_providers=[p.name for p in providers]
+            )
         
         # Combine responses
         if combination_method == "summarize":
