@@ -1,13 +1,16 @@
-name: CI/CD Pipeline
+name: CI Tests
 
 on:
   push:
-    branches-ignore:
-      - main
+    branches:
+      - develop
+      - 'feature/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'chore/**'
   pull_request:
     branches:
       - main
-      - mvp-alpha
       - develop
 
 jobs:

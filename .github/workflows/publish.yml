@@ -1,15 +1,14 @@
-name: Publish to PyPI
+name: Publish Package
 
 on:
   push:
     branches:
-      - main
-  release:
-    types: [published]
+      - develop  # Publish to TestPyPI
+      - main     # Publish to PyPI
 
 jobs:
   publish:
-    name: Build and Publish to PyPI
+    name: Build and Publish Package
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,21 +35,6 @@ jobs:
         uv pip install -e ".[ci]"
         uv pip install build twine
 
-    - name: Auto-increment version for TestPyPI
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-      run: |
-        # Make script executable
-        chmod +x .github/scripts/bump_version.py
-        
-        # Run version bump script
-        python .github/scripts/bump_version.py ${{ github.run_number }}
-        
-        # Show updated version
-        echo "Updated pyproject.toml:"
-        grep "version = " pyproject.toml
-        echo "Updated __init__.py:"
-        grep "__version__ = " openmux/__init__.py
-
     - name: Build package
       run: |
         source .venv/bin/activate
@@ -61,27 +45,73 @@ jobs:
         source .venv/bin/activate
         twine check dist/*
 
-    - name: Publish to TestPyPI (on branch push)
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    - name: Get version
+      id: get_version
+      run: |
+        VERSION=$(grep "^version = " pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "📦 Package version: $VERSION"
+
+    - name: Publish to TestPyPI (develop branch)
+      if: github.ref == 'refs/heads/develop'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.TESTPYPI_TOKEN }}
       run: |
         source .venv/bin/activate
-        twine upload --repository testpypi dist/* --skip-existing || true
+        echo "🚀 Publishing version ${{ steps.get_version.outputs.version }} to TestPyPI..."
+        twine upload --repository testpypi dist/* --skip-existing || echo "⚠️ Version might already exist on TestPyPI"
 
-    - name: Publish to PyPI (on release)
-      if: github.event_name == 'release'
+    - name: Publish to PyPI (main branch)
+      if: github.ref == 'refs/heads/main'
       env:
         TWINE_USERNAME: __token__
         TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
         source .venv/bin/activate
+        echo "🚀 Publishing version ${{ steps.get_version.outputs.version }} to PyPI..."
         twine upload dist/*
+
+    - name: Create GitHub Release (main branch only)
+      if: github.ref == 'refs/heads/main'
+      uses: softprops/action-gh-release@v1
+      with:
+        tag_name: v${{ steps.get_version.outputs.version }}
+        name: Release v${{ steps.get_version.outputs.version }}
+        body: |
+          ## OpenMux v${{ steps.get_version.outputs.version }}
+          
+          🎉 New release published to PyPI!
+          
+          Install with:
+          ```bash
+          pip install openmux==${{ steps.get_version.outputs.version }}
+          ```
+          
+          See [CHANGELOG.md](CHANGELOG.md) for details.
+        draft: false
+        prerelease: false
+        files: dist/*
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
       with:
-        name: dist-packages
+        name: dist-packages-${{ steps.get_version.outputs.version }}
         path: dist/
         retention-days: 30
+
+    - name: Summary
+      run: |
+        echo "## 📦 Build Summary" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "- **Version**: ${{ steps.get_version.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+        echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
+        if [ "${{ github.ref }}" == "refs/heads/develop" ]; then
+          echo "- **Published to**: [TestPyPI](https://test.pypi.org/project/openmux/)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Install**: \`pip install -i https://test.pypi.org/simple/ openmux==${{ steps.get_version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+        else
+          echo "- **Published to**: [PyPI](https://pypi.org/project/openmux/)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Install**: \`pip install openmux==${{ steps.get_version.outputs.version }}\`" >> $GITHUB_STEP_SUMMARY
+        fi
