@@ -50,11 +50,11 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/opencascade"
-Documentation = "https://github.com/yourusername/opencascade/tree/main/docs"
-Repository = "https://github.com/yourusername/opencascade"
-Issues = "https://github.com/yourusername/opencascade/issues"
-Changelog = "https://github.com/yourusername/opencascade/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/mdnu838/opencascade"
+Documentation = "https://github.com/mdnu838/opencascade/tree/main/docs"
+Repository = "https://github.com/mdnu838/opencascade"
+Issues = "https://github.com/mdnu838/opencascade/issues"
+Changelog = "https://github.com/mdnu838/opencascade/blob/main/CHANGELOG.md"
 
 [project.scripts]
 opencascade = "opencascade.cli.main:app"

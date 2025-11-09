@@ -41,7 +41,7 @@ class ModelSelector:
         # Filter providers that support the task
         suitable_providers = [
             p for p in self.providers
-            if task_type.value in p.supported_tasks()
+            if p.supports_task(task_type)
         ]
         
         if not suitable_providers:
