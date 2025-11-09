@@ -8,11 +8,11 @@ Thank you for your interest in contributing to OpenMux! This document provides g
 - [Code of Conduct](#code-of-conduct)
 - [Getting Started](#getting-started)
 - [Development Workflow](#development-workflow)
-- [Task Selection](#task-selection)
+- [Commit Message Convention](#commit-message-convention)
 - [Testing Requirements](#testing-requirements)
 - [Code Style](#code-style)
 - [Pull Request Process](#pull-request-process)
-- [Documentation](#documentation)
+- [Release Process](#release-process)
 
 ---
 
@@ -40,10 +40,11 @@ Thank you for your interest in contributing to OpenMux! This document provides g
 - uv (recommended) or pip
 
 ### Setup Development Environment
+
 ```bash
 # Clone the repository
-git clone https://github.com/mdnu838/openmux.git
-cd openmux
+git clone https://github.com/mdnu838/OpenMux.git
+cd OpenMux
 
 # Create and activate virtual environment
 uv venv
@@ -53,546 +54,363 @@ source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 uv pip install -e ".[dev]"
 
 # Verify setup
-pytest tests/unit -v
+pytest tests/unit/ -v
 ```
 
 ---
 
-## � Branching Strategy & Pull Requests
+## 🌿 Development Workflow
 
-**IMPORTANT**: All feature changes require a separate branch and a Pull Request to `main`.
+### Branch Strategy
 
-### Branch Structure
+We follow a simplified Git Flow model:
 
-```
-main (production-ready, protected)
-├── mvp-alpha (alpha testing, protected)
-├── develop (integration branch)
-└── feature/* (feature branches)
-    ├── feature/new-provider
-    ├── bugfix/fix-selector
-    └── docs/update-readme
-```
+- **`main`**: Production-ready code. Protected branch requiring PR reviews. → Publishes to **PyPI**
+- **`develop`**: Integration branch for features. Tested code ready for next release. → Publishes to **TestPyPI**
+- **`feature/*`**: New features (e.g., `feature/add-new-provider`)
+- **`fix/*`**: Bug fixes (e.g., `fix/classifier-accuracy`)
+- **`docs/*`**: Documentation updates (e.g., `docs/api-reference`)
+- **`chore/*`**: Maintenance tasks (e.g., `chore/update-dependencies`)
 
-### Branch Types & Naming
-
-- **`feature/*`**: New features (e.g., `feature/add-anthropic-provider`)
-- **`bugfix/*`**: Bug fixes (e.g., `bugfix/fix-selector-method`)
-- **`hotfix/*`**: Critical production fixes (e.g., `hotfix/security-patch`)
-- **`docs/*`**: Documentation updates (e.g., `docs/update-api-guide`)
-- **`test/*`**: Test improvements (e.g., `test/add-combiner-tests`)
-- **`refactor/*`**: Code refactoring (e.g., `refactor/simplify-router`)
-
-### Creating a Feature Branch
+### Creating a New Branch
 
 ```bash
-# Always start from latest main or develop
-git checkout main
-git pull origin main
-
-# Create your feature branch
+# For a new feature
+git checkout develop
+git pull origin develop
 git checkout -b feature/your-feature-name
 
-# Make changes, commit regularly
+# Make changes, commit, push
 git add .
-git commit -m "feat: add new feature"
-
-# Push to GitHub
+git commit -m "feat: Add awesome feature"
 git push origin feature/your-feature-name
 
-# Create Pull Request on GitHub
+# Create PR on GitHub: feature/* → develop
 ```
 
-### Pull Request Requirements
+### Keep Your Branch Updated
 
-**Every PR MUST**:
-- ✅ Pass all CI/CD checks
-- ✅ Include tests for new code
-- ✅ Maintain ≥90% code coverage
-- ✅ Be reviewed and approved by a maintainer
-- ✅ Have no merge conflicts
-- ✅ Follow conventional commit format
-- ✅ Update documentation if needed
+```bash
+# Update from upstream
+git fetch origin
+git checkout develop
+git merge origin/develop
 
-### PR Title Format
-
-Use conventional commits:
-```
-<type>: <description>
-
-Examples:
-feat: Add Anthropic Claude provider
-fix: Resolve selector method name mismatch
-docs: Update installation guide
-test: Add router integration tests
+# Rebase your feature branch
+git checkout feature/your-feature-name
+git rebase develop
 ```
 
 ---
 
-## �🔄 Development Workflow
+## 📝 Commit Message Convention
 
-### 1. Choose a Task
-- Review `docs/TASK_BREAKDOWN.md`
-- Select a task that matches your skill level
-- Check that dependencies are complete
-- Comment on the task to claim it
+We follow [Conventional Commits](https://www.conventionalcommits.org/):
 
-### 2. Create a Branch
-```bash
-git checkout -b task-X.Y-brief-description
+```
+<type>(<scope>): <subject>
+
+<body>
+
+<footer>
 ```
 
-### 3. Implement Changes (TDD)
+### Types
+- `feat`: New feature
+- `fix`: Bug fix
+- `docs`: Documentation changes
+- `style`: Code style changes (formatting, etc.)
+- `refactor`: Code refactoring
+- `test`: Adding or updating tests
+- `chore`: Maintenance tasks
+- `perf`: Performance improvements
+- `ci`: CI/CD changes
 
-#### Write Tests First
-```python
-# tests/unit/test_module/test_feature.py
-def test_new_feature():
-    """Test the new feature."""
-    result = new_feature("input")
-    assert result == "expected_output"
-```
-
-#### Implement Code
-```python
-# openmux/module/feature.py
-def new_feature(input: str) -> str:
-    """Implement the feature.
-    
-    Args:
-        input: The input string
-        
-    Returns:
-        The processed output
-    """
-    return process(input)
-```
-
-#### Run Tests
-```bash
-# Run specific test
-pytest tests/unit/test_module/test_feature.py -v
-
-# Run with coverage
-pytest --cov=openmux.module.feature --cov-report=term
-
-# Debug if needed
-pytest -s --pdb
-```
-
-### 4. Ensure Quality
+### Examples
 
 ```bash
-# Format code
-black openmux/ tests/
-isort openmux/ tests/
+feat(classifier): Add support for image classification tasks
 
-# Lint code
-ruff check openmux/
-mypy openmux/
+fix(orchestrator): Handle timeout errors gracefully
 
-# Check test coverage
-pytest --cov=openmux --cov-fail-under=90
+docs(readme): Update installation instructions
+
+chore(deps): Upgrade transformers to v4.35.0
+
+test(router): Add integration tests for failover logic
 ```
-
-### 5. Commit Changes
-```bash
-git add .
-git commit -m "Task X.Y: Brief description
-
-- Detailed change 1
-- Detailed change 2
-- Test coverage: 95%
-
-Closes #issue_number"
-```
-
-### 6. Push and Create PR
-```bash
-git push origin task-X.Y-brief-description
-```
-Then create a Pull Request on GitHub.
-
----
-
-## 📝 Task Selection
-
-### Task Categories
-
-#### 🟢 Good First Tasks
-- Documentation improvements
-- Adding test cases
-- Fixing typos or formatting
-- Simple bug fixes
-
-#### 🟡 Intermediate Tasks
-- Implementing new providers
-- Adding utility functions
-- Enhancing existing features
-- Writing integration tests
-
-#### 🔴 Advanced Tasks
-- Core orchestration logic
-- Performance optimizations
-- Architecture changes
-- Complex algorithm implementations
-
-### Task Dependencies
-Always check `docs/TASK_BREAKDOWN.md` for:
-- Task dependencies (must be completed first)
-- Estimated effort
-- Required skills
-- Deliverables
 
 ---
 
 ## 🧪 Testing Requirements
 
-### Test Coverage Standards
-- **Overall**: 90% minimum
-- **Core modules**: 95% minimum
-- **New code**: 100% coverage required
-
-### Test Types Required
-
-#### 1. Unit Tests (Always Required)
-```python
-class TestNewFeature:
-    def test_basic_functionality(self):
-        """Test basic operation."""
-        pass
-    
-    def test_error_handling(self):
-        """Test error cases."""
-        pass
-    
-    def test_edge_cases(self):
-        """Test boundary conditions."""
-        pass
-```
-
-#### 2. Integration Tests (When Applicable)
-```python
-@pytest.mark.integration
-class TestFeatureIntegration:
-    def test_integration_with_other_module(self):
-        """Test integration between modules."""
-        pass
-```
-
-#### 3. Debug Checks (Always Required)
-Every test must include diagnostic information:
-```python
-def test_with_debug_info(self):
-    """Test with debugging information."""
-    result = process(input_data)
-    assert result == expected, (
-        f"Failed: expected {expected}, got {result}\n"
-        f"Input: {input_data}\n"
-        f"State: {self.feature.__dict__}"
-    )
-```
-
 ### Running Tests
+
 ```bash
 # Run all tests
 pytest
 
-# Run specific category
-pytest tests/unit
-pytest tests/integration
+# Run unit tests only
+pytest tests/unit/ -v
+
+# Run integration tests
+pytest tests/integration/ -v
 
 # Run with coverage
-pytest --cov=openmux --cov-report=html
+pytest --cov=openmux --cov-report=html --cov-report=term-missing
 
-# Run in watch mode (requires pytest-watch)
-ptw
+# Run specific test file
+pytest tests/unit/test_classifier.py -v
 ```
+
+### Test Structure
+
+```
+tests/
+├── unit/                    # Fast, isolated tests
+│   ├── test_classifier.py
+│   └── test_orchestrator.py
+├── integration/             # Integration tests
+│   ├── test_orchestrator_mock.py    # Mock-based
+│   └── test_openrouter_live.py      # Live API (requires key)
+└── fixtures/                # Test data
+```
+
+### Writing Tests
+
+```python
+import pytest
+from openmux import Orchestrator
+
+def test_orchestrator_initialization():
+    """Test that orchestrator initializes correctly."""
+    orchestrator = Orchestrator(api_key="test_key")
+    assert orchestrator is not None
+    assert orchestrator.api_key == "test_key"
+
+@pytest.mark.asyncio
+async def test_async_processing():
+    """Test async processing with mock data."""
+    # Test implementation
+    pass
+```
+
+### Test Coverage Requirements
+
+- **Unit tests**: Minimum 80% coverage
+- **Integration tests**: All major workflows
+- **All new features**: Must include tests
+- **Bug fixes**: Must include regression tests
 
 ---
 
 ## 🎨 Code Style
 
-### Python Style Guidelines
+### Python Style
 
-#### Type Hints (Required)
-```python
-from typing import Optional, List, Dict, Any
+- Follow **PEP 8**
+- Use **4 spaces** for indentation
+- Maximum line length: **100 characters** (flexible to 120 for readability)
+- Use **type hints** for function signatures
+- Use **docstrings** (Google style preferred)
 
-def process_query(
-    query: str,
-    config: Optional[Dict[str, Any]] = None
-) -> str:
-    """Process a query."""
-    pass
-```
+### Code Formatting
 
-#### Docstrings (Required)
-```python
-def function_name(param1: str, param2: int) -> bool:
-    """Brief description.
-    
-    Longer description explaining the function's purpose,
-    behavior, and any important details.
-    
-    Args:
-        param1: Description of param1
-        param2: Description of param2
-        
-    Returns:
-        Description of return value
-        
-    Raises:
-        ValueError: When validation fails
-        RuntimeError: When processing fails
-        
-    Examples:
-        >>> function_name("test", 5)
-        True
-    """
-    pass
-```
-
-#### Code Organization
-```python
-# 1. Imports (grouped and sorted)
-from __future__ import annotations
-
-import os
-import sys
-from pathlib import Path
-
-from typing import Optional, Dict, Any
-
-from openmux.core import Base
-from openmux.utils import logger
-
-# 2. Constants
-MAX_RETRIES = 3
-DEFAULT_TIMEOUT = 30
-
-# 3. Classes
-class MyClass:
-    """Class implementation."""
-    pass
-
-# 4. Functions
-def my_function():
-    """Function implementation."""
-    pass
-```
-
-### Formatting Tools
 ```bash
-# Auto-format with black
+# Format code with Black
 black openmux/ tests/
 
 # Sort imports with isort
 isort openmux/ tests/
 
-# Lint with ruff
-ruff check openmux/
+# Lint with Ruff
+ruff check openmux/ tests/
 
 # Type check with mypy
-mypy openmux/
+mypy openmux/ --ignore-missing-imports
+```
+
+### Example Code Style
+
+```python
+from typing import Dict, List, Optional
+
+def process_query(
+    query: str,
+    options: Optional[Dict[str, any]] = None
+) -> List[str]:
+    """
+    Process a user query and return results.
+    
+    Args:
+        query: The user's input query
+        options: Optional configuration parameters
+        
+    Returns:
+        List of processed results
+        
+    Raises:
+        ValueError: If query is empty
+    """
+    if not query:
+        raise ValueError("Query cannot be empty")
+    
+    # Implementation here
+    return results
 ```
 
 ---
 
-## 🔍 Pull Request Process
+## 🔄 Pull Request Process
 
-### Before Creating PR
+### Before Submitting
 
-#### Checklist
+- [ ] Code follows project style guidelines
 - [ ] All tests pass locally
-- [ ] Code coverage >= 90%
-- [ ] Code formatted (black, isort)
-- [ ] Linting passes (ruff, mypy)
-- [ ] Documentation updated
-- [ ] CHANGELOG.md updated
-- [ ] No merge conflicts with main
+- [ ] New tests added for new features
+- [ ] Documentation updated (if needed)
+- [ ] Commit messages follow convention
+- [ ] Branch is up-to-date with develop
 
-### PR Template
-```markdown
-## Description
-Brief description of changes
+### PR Description Template
 
-## Related Task
-Closes Task X.Y from docs/TASK_BREAKDOWN.md
+Use the PR template to include:
 
-## Type of Change
-- [ ] Bug fix
-- [ ] New feature
-- [ ] Breaking change
-- [ ] Documentation update
-
-## Changes Made
-- Change 1
-- Change 2
-
-## Testing
-- [ ] Unit tests added/updated
-- [ ] Integration tests added/updated
-- [ ] All tests passing locally
-- [ ] Coverage >= 90%
-
-## Documentation
-- [ ] Code documented (docstrings)
-- [ ] README updated (if needed)
-- [ ] API docs updated (if needed)
-- [ ] CHANGELOG.md updated
-
-## Screenshots/Examples
-(if applicable)
-
-## Checklist
-- [ ] Code follows style guidelines
-- [ ] Self-review completed
-- [ ] Comments added for complex code
-- [ ] No new warnings
-- [ ] Dependent tasks completed
-```
+1. **What** - What changes does this PR make?
+2. **Why** - Why are these changes needed?
+3. **How** - How did you implement the changes?
+4. **Testing** - How was this tested?
+5. **Related Issues** - Link any related issues
 
 ### Review Process
-1. **Automated Checks**: CI must pass
-2. **Code Review**: At least one approval required
-3. **Testing**: Reviewer verifies tests are comprehensive
-4. **Documentation**: Reviewer checks documentation updates
-5. **Approval**: Maintainer approves and merges
+
+1. Create PR from your branch to `develop`
+2. Automated CI checks must pass
+3. At least one maintainer approval required
+4. Address all review comments
+5. Maintainer merges PR
 
 ---
 
-## 📚 Documentation
+## 📦 Release Process (Maintainers Only)
 
-### Documentation Requirements
+### Version Management
 
-#### Code Documentation
-Every module, class, and function must have docstrings following Google style.
+We use semantic versioning (MAJOR.MINOR.PATCH):
+- **MAJOR**: Breaking changes
+- **MINOR**: New features (backward compatible)
+- **PATCH**: Bug fixes (backward compatible)
 
-#### README Updates
-Update README.md when:
-- Adding new features
-- Changing installation process
-- Modifying usage examples
-- Updating dependencies
+### Publishing Workflow
 
-#### API Documentation
-Update `docs/api_reference.md` when:
-- Adding public APIs
-- Changing function signatures
-- Adding new modules
+#### 1. Development → TestPyPI (develop branch)
 
-#### Architecture Documentation
-Update `docs/ARCHITECTURE.md` when:
-- Adding new components
-- Changing data flow
-- Modifying system design
+```bash
+# Merge features to develop
+git checkout develop
+git pull origin develop
 
----
+# Update version for testing (e.g., 0.2.0-beta.1)
+# Edit pyproject.toml and openmux/__init__.py
 
-## 🐛 Reporting Bugs
+# Update CHANGELOG.md
+git add pyproject.toml openmux/__init__.py CHANGELOG.md
+git commit -m "chore: Bump version to 0.2.0-beta.1"
+git push origin develop
 
-### Bug Report Template
-```markdown
-**Description**
-Clear description of the bug
+# 🚀 GitHub Actions automatically:
+# - Runs all tests
+# - Builds package
+# - Publishes to TestPyPI
+```
 
-**To Reproduce**
-Steps to reproduce:
-1. Step 1
-2. Step 2
-3. See error
+**Test the package:**
+```bash
+pip install -i https://test.pypi.org/simple/ openmux==0.2.0-beta.1
+```
 
-**Expected Behavior**
-What you expected to happen
+#### 2. Production → PyPI (main branch)
 
-**Actual Behavior**
-What actually happened
+```bash
+# Update version to stable (e.g., 0.2.0)
+# Edit pyproject.toml and openmux/__init__.py
 
-**Environment**
-- OS: [e.g., macOS 14]
-- Python: [e.g., 3.11]
-- OpenMux version: [e.g., 0.1.0]
+# Create PR: develop → main
+# After review and merge:
 
-**Logs/Screenshots**
-Any relevant logs or screenshots
+# 🚀 GitHub Actions automatically:
+# - Runs all tests
+# - Builds package
+# - Publishes to PyPI
+# - Creates GitHub Release with tag v0.2.0
+```
 
-**Additional Context**
-Any other relevant information
+**Install from PyPI:**
+```bash
+pip install openmux==0.2.0
+```
+
+### Release Checklist
+
+- [ ] All tests pass locally
+- [ ] Version bumped in `pyproject.toml` and `openmux/__init__.py`
+- [ ] CHANGELOG.md updated with changes
+- [ ] Documentation updated (if needed)
+- [ ] Breaking changes documented
+- [ ] Migration guide provided (if breaking changes)
+
+### Workflow Summary
+
+```
+feature/my-feature
+    ↓ (PR + merge)
+develop ──────────► TestPyPI (test.pypi.org)
+    ↓ (PR + merge)
+main ─────────────► PyPI (pypi.org) + GitHub Release
+```
+
+### Emergency Hotfix
+
+For critical bugs in production:
+
+```bash
+# Create hotfix branch from main
+git checkout main
+git pull origin main
+git checkout -b fix/critical-bug
+
+# Fix the bug, bump patch version (e.g., 0.2.0 → 0.2.1)
+
+# Push and create PR to main
+git push origin fix/critical-bug
+
+# After merge to main, backport to develop
+git checkout develop
+git merge main
+git push origin develop
 ```
 
 ---
 
-## 💡 Feature Requests
+## 📚 Additional Resources
 
-### Feature Request Template
-```markdown
-**Feature Description**
-Clear description of the proposed feature
-
-**Use Case**
-Why is this feature needed?
-
-**Proposed Solution**
-How would this feature work?
-
-**Alternatives Considered**
-What other solutions did you consider?
-
-**Additional Context**
-Any other relevant information
-```
+- [Development Guide](docs/DEVELOPMENT_GUIDE.md)
+- [Architecture Documentation](docs/ARCHITECTURE.md)
+- [Testing Strategy](docs/TESTING_STRATEGY.md)
+- [CI/CD Workflow Guide](.github/WORKFLOW_GUIDE.md)
+- [GitHub Secrets Setup](.github/SECRETS_SETUP.md)
 
 ---
 
-## ❓ Questions & Support
+## 🆘 Need Help?
 
-### Getting Help
-- **Documentation**: Check `docs/` folder
-- **GitHub Discussions**: Ask questions
-- **GitHub Issues**: Report bugs
-- **Code Comments**: Read inline documentation
-
-### Communication Guidelines
-- Be clear and concise
-- Provide context and examples
-- Be patient and respectful
-- Search existing issues/discussions first
-
----
-
-## 🎓 Learning Resources
-
-### For Contributors
-- [Python Style Guide (PEP 8)](https://peps.python.org/pep-0008/)
-- [Git Best Practices](https://www.git-scm.com/book/en/v2)
-- [Testing Best Practices](https://docs.pytest.org/en/stable/goodpractices.html)
-- [Type Hints Guide](https://docs.python.org/3/library/typing.html)
-
-### Project-Specific
-- `docs/DEVELOPMENT_GUIDE.md` - Development setup and workflow
-- `docs/TASK_BREAKDOWN.md` - Detailed task list
-- `docs/TESTING_STRATEGY.md` - Testing guidelines
-- `docs/ARCHITECTURE.md` - System architecture
-
----
-
-## 🏆 Recognition
-
-Contributors will be:
-- Listed in CONTRIBUTORS.md
-- Mentioned in release notes
-- Credited in documentation
-- Thanked in the community
-
----
-
-## 📄 License
-
-By contributing, you agree that your contributions will be licensed under the MIT License.
+- Check existing [issues](https://github.com/mdnu838/OpenMux/issues)
+- Review [documentation](docs/)
+- Ask in [GitHub Discussions](https://github.com/mdnu838/OpenMux/discussions)
+- Reach out to maintainers
 
 ---
 
 ## 🙏 Thank You!
 
-Thank you for contributing to OpenMux! Your efforts help make this project better for everyone.
+Thank you for contributing to OpenMux! Your efforts help make this project better for everyone. 🚀
