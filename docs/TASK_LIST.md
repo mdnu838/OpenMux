@@ -11,56 +11,56 @@
 
 ## 🎯 Phase 1: MVP Enhancement (Current)
 
-### Task 1.1: Effortless Setup ⏳
+### Task 1.1: Effortless Setup ✅
 **Goal:** Make the library installation to first query < 2 minutes
 
 | Sub-task | Status | Priority | Effort | Resources Needed |
 |----------|--------|----------|--------|------------------|
-| Auto-detect `.env` file | ⏳ | HIGH | 1 day | Python `dotenv` library |
-| Create `openmux init` wizard | ⏳ | HIGH | 2 days | `click` or `typer` CLI library |
-| Validate API keys on init | ⏳ | MEDIUM | 1 day | OpenRouter API docs |
-| Generate default config | ⏳ | MEDIUM | 1 day | Template files |
-| Better error messages | ⏳ | HIGH | 2 days | Error message library |
+| Auto-detect `.env` file | ✅ | HIGH | 1 day | Python `dotenv` library |
+| Create `openmux init` wizard | ✅ | HIGH | 2 days | `click` or `typer` CLI library |
+| Validate API keys on init | ✅ | MEDIUM | 1 day | OpenRouter API docs |
+| Generate default config | ✅ | MEDIUM | 1 day | Template files |
+| Better error messages | ✅ | HIGH | 2 days | Error message library |
 
-**Total Effort:** 1 week  
+**Total Effort:** 1 week ✅ **COMPLETED**  
 **Dependencies:** OpenRouter API key for testing  
-**Deliverable:** `pip install openmux && openmux init && openmux chat "hi"`
+**Deliverable:** `pip install openmux && openmux init && openmux chat "hi"` ✅
 
 ---
 
-### Task 1.2: CLI Tool 🔄
+### Task 1.2: CLI Tool ✅
 **Goal:** Enable command-line interaction
 
 | Sub-task | Status | Priority | Effort | Resources Needed |
 |----------|--------|----------|--------|------------------|
-| Create `openmux chat` command | 🔄 | HIGH | 2 days | `click` library |
-| Implement interactive mode | ⏳ | MEDIUM | 2 days | `prompt_toolkit` |
+| Create `openmux chat` command | ✅ | HIGH | 2 days | `click` library |
+| Implement interactive mode | ✅ | MEDIUM | 2 days | `prompt_toolkit` |
 | Add streaming output | ⏳ | LOW | 1 day | SSE/streaming support |
 | Session history | ⏳ | LOW | 1 day | Local file storage |
 | Export chat logs | ⏳ | LOW | 1 day | JSON/Markdown export |
 
 **Total Effort:** 1 week  
 **Dependencies:** Basic orchestrator (✅ done)  
-**Deliverable:** `openmux chat` working CLI tool
+**Deliverable:** `openmux chat` working CLI tool ✅ **CORE FEATURES DONE**
 
 ---
 
-### Task 1.3: Model Selection Enhancement ⏳
+### Task 1.3: Model Selection Enhancement ✅
 **Goal:** Smarter model selection with failover
 
 | Sub-task | Status | Priority | Effort | Resources Needed |
 |----------|--------|----------|--------|------------------|
 | Add model quality scores | ⏳ | HIGH | 2 days | Benchmark data (OpenRouter API) |
-| Implement failover logic | ⏳ | HIGH | 2 days | Retry/circuit breaker pattern |
-| Health check endpoints | ⏳ | MEDIUM | 2 days | HTTP requests, async |
+| Implement failover logic | ✅ | HIGH | 2 days | Retry/circuit breaker pattern |
+| Health check endpoints | 🔄 | MEDIUM | 2 days | HTTP requests, async |
 | Response time tracking | ⏳ | MEDIUM | 1 day | Time metrics library |
-| Model preference system | ⏳ | LOW | 2 days | User config schema |
+| Model preference system | ✅ | LOW | 2 days | User config schema |
 
 **Total Effort:** 1.5 weeks  
 **Dependencies:**
 - OpenRouter API (model list)
 - Benchmark datasets (optional)  
-**Deliverable:** Automatic failover working
+**Deliverable:** Automatic failover working ✅ **CORE FEATURES DONE**
 
 ---
 
