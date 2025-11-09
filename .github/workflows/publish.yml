@@ -33,7 +33,23 @@ jobs:
       run: |
         uv venv
         source .venv/bin/activate
+        uv pip install -e ".[ci]"
         uv pip install build twine
+
+    - name: Auto-increment version for TestPyPI
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: |
+        # Make script executable
+        chmod +x .github/scripts/bump_version.py
+        
+        # Run version bump script
+        python .github/scripts/bump_version.py ${{ github.run_number }}
+        
+        # Show updated version
+        echo "Updated pyproject.toml:"
+        grep "version = " pyproject.toml
+        echo "Updated __init__.py:"
+        grep "__version__ = " openmux/__init__.py
 
     - name: Build package
       run: |

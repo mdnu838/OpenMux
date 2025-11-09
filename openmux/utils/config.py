@@ -4,8 +4,14 @@ import os
 from pathlib import Path
 from typing import Dict, Any, Optional
 import json
-import keyring
 from cryptography.fernet import Fernet
+
+try:
+    import keyring
+    from keyring.errors import NoKeyringError
+    KEYRING_AVAILABLE = True
+except (ImportError, NoKeyringError):
+    KEYRING_AVAILABLE = False
 
 class ConfigurationError(Exception):
     """Configuration related errors."""
@@ -31,10 +37,29 @@ class Config:
     
     def _init_encryption(self) -> None:
         """Initialize encryption key."""
-        key = keyring.get_password("openmux", "encryption_key")
+        # Try to use keyring if available, otherwise use environment variable or generate
+        key = None
+        
+        if KEYRING_AVAILABLE:
+            try:
+                key = keyring.get_password("openmux", "encryption_key")
+                if not key:
+                    key = Fernet.generate_key().decode()
+                    keyring.set_password("openmux", "encryption_key", key)
+            except Exception:
+                # Keyring failed, fall back to other methods
+                pass
+        
+        # Fall back to environment variable
+        if not key:
+            key = os.environ.get("OPENMUX_ENCRYPTION_KEY")
+        
+        # Generate a session key if still no key (for CI/testing)
         if not key:
             key = Fernet.generate_key().decode()
-            keyring.set_password("openmux", "encryption_key", key)
+            # Store in environment for this session
+            os.environ["OPENMUX_ENCRYPTION_KEY"] = key
+        
         self.fernet = Fernet(key.encode())
     
     def load(self) -> Dict[str, Any]:

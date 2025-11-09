@@ -7,10 +7,10 @@ requires-python = ">=3.9"
 license = {text = "MIT"}
 keywords = ["ai", "llm", "genai", "model-selection", "orchestration", "free-models", "openmux"]
 authors = [
-    {name = "Nizam Uddin", email = "your.email@example.com"}
+    {name = "Md Nizamuddin", email = "mdnu838@gmail.com"}
 ]
 maintainers = [
-    {name = "Nizam Uddin", email = "your.email@example.com"}
+    {name = "Md Nizamuddin", email = "mdnu838@gmail.com"}
 ]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -47,6 +47,9 @@ dev = [
     "ruff>=0.0.280",
     "mypy>=1.5.0",
     "types-requests",
+]
+ci = [
+    "keyrings.alt>=5.0.0",  # Fallback keyring backend for CI/CD
 ]
 
 [project.urls]
