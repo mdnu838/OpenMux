@@ -34,13 +34,17 @@ async def test_process_simple_query(orchestrator):
     mock_provider.supports_task.return_value = True
     mock_provider.generate = AsyncMock(return_value="Test response")
     
-    # Mock selector
+    # Mock selector to return list of providers (for failover)
     with patch.object(orchestrator, '_initialize_selector'):
         orchestrator.selector = MagicMock()
-        orchestrator.selector.select_single.return_value = mock_provider
+        orchestrator.selector.select_with_fallbacks.return_value = [mock_provider]
         
-        # Mock router
-        with patch.object(orchestrator.router, 'route_single', new=AsyncMock(return_value="Test response")):
+        # Mock router failover
+        with patch.object(
+            orchestrator.router, 
+            'route_with_failover', 
+            new=AsyncMock(return_value=("Test response", "MockProvider"))
+        ):
             result = await orchestrator._process_async("What is Python?")
             
             assert result == "Test response"
@@ -56,9 +60,13 @@ async def test_process_with_task_type(orchestrator):
     
     with patch.object(orchestrator, '_initialize_selector'):
         orchestrator.selector = MagicMock()
-        orchestrator.selector.select_single.return_value = mock_provider
+        orchestrator.selector.select_with_fallbacks.return_value = [mock_provider]
         
-        with patch.object(orchestrator.router, 'route_single', new=AsyncMock(return_value="Code response")):
+        with patch.object(
+            orchestrator.router,
+            'route_with_failover',
+            new=AsyncMock(return_value=("Code response", "MockProvider"))
+        ):
             result = await orchestrator._process_async(
                 "Write a function",
                 task_type=TaskType.CODE
@@ -122,7 +130,7 @@ async def test_no_provider_available(orchestrator):
     """Test error handling when no provider is available."""
     with patch.object(orchestrator, '_initialize_selector'):
         orchestrator.selector = MagicMock()
-        orchestrator.selector.select_single.return_value = None
+        orchestrator.selector.select_with_fallbacks.return_value = []
         
         with pytest.raises(Exception, match="No provider available"):
             await orchestrator._process_async("Test query")

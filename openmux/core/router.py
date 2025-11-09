@@ -2,7 +2,7 @@
 
 import asyncio
 import logging
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
 from ..providers.base import BaseProvider
 
@@ -116,3 +116,56 @@ class Router:
         )
         
         return valid_responses
+    
+    async def route_with_failover(
+        self,
+        providers: List[BaseProvider],
+        query: str,
+        **kwargs
+    ) -> Tuple[str, str]:
+        """Route query to providers with automatic failover.
+        
+        Tries providers in sequence until one succeeds. Uses exponential
+        backoff between provider switches.
+        
+        Args:
+            providers: List of providers to try (in order)
+            query: Query string
+            **kwargs: Additional parameters for providers
+            
+        Returns:
+            Tuple of (response, provider_name) on success
+            
+        Raises:
+            Exception: If all providers fail
+        """
+        logger.info(f"Attempting failover across {len(providers)} providers")
+        
+        last_error = None
+        
+        for idx, provider in enumerate(providers):
+            try:
+                logger.info(f"Trying provider {idx + 1}/{len(providers)}: {provider.name}")
+                
+                # Try this provider with retries
+                response = await self.route_single(provider, query, **kwargs)
+                
+                logger.info(f"✓ Success with provider: {provider.name}")
+                return response, provider.name
+                
+            except Exception as e:
+                last_error = e
+                logger.warning(
+                    f"✗ Provider {provider.name} failed: {str(e)[:100]}"
+                )
+                
+                # Wait before trying next provider (exponential backoff)
+                if idx < len(providers) - 1:
+                    wait_time = 2 ** idx
+                    logger.debug(f"Waiting {wait_time}s before trying next provider")
+                    await asyncio.sleep(wait_time)
+        
+        # All providers failed
+        error_msg = f"All {len(providers)} providers failed. Last error: {last_error}"
+        logger.error(error_msg)
+        raise Exception(error_msg)
