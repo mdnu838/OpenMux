@@ -1,30 +1,27 @@
-"""Configuration management for OpenCascade."""
+"""Configuration management for OpenMux."""
 
 import os
 from pathlib import Path
 from typing import Dict, Any, Optional
 import json
-from cryptography.fernet import Fernet
 
-try:
-    import keyring
-    from keyring.errors import NoKeyringError
-    KEYRING_AVAILABLE = True
-except (ImportError, NoKeyringError):
-    KEYRING_AVAILABLE = False
 
 class ConfigurationError(Exception):
     """Configuration related errors."""
     pass
 
+
 class Config:
-    """Secure configuration management."""
+    """Simple configuration management using JSON files."""
     
     def __init__(self, config_path: Optional[str] = None):
-        """Initialize configuration manager."""
+        """Initialize configuration manager.
+        
+        Note: API keys and secrets should be stored in .env file,
+        not in the config file. This is just for user preferences.
+        """
         self.config_path = Path(config_path) if config_path else self._default_config_path()
         self._ensure_config_dir()
-        self._init_encryption()
     
     @staticmethod
     def _default_config_path() -> Path:
@@ -35,51 +32,22 @@ class Config:
         """Ensure configuration directory exists."""
         self.config_path.parent.mkdir(parents=True, exist_ok=True)
     
-    def _init_encryption(self) -> None:
-        """Initialize encryption key."""
-        # Try to use keyring if available, otherwise use environment variable or generate
-        key = None
-        
-        if KEYRING_AVAILABLE:
-            try:
-                key = keyring.get_password("openmux", "encryption_key")
-                if not key:
-                    key = Fernet.generate_key().decode()
-                    keyring.set_password("openmux", "encryption_key", key)
-            except Exception:
-                # Keyring failed, fall back to other methods
-                pass
-        
-        # Fall back to environment variable
-        if not key:
-            key = os.environ.get("OPENMUX_ENCRYPTION_KEY")
-        
-        # Generate a session key if still no key (for CI/testing)
-        if not key:
-            key = Fernet.generate_key().decode()
-            # Store in environment for this session
-            os.environ["OPENMUX_ENCRYPTION_KEY"] = key
-        
-        self.fernet = Fernet(key.encode())
-    
     def load(self) -> Dict[str, Any]:
-        """Load configuration securely."""
+        """Load configuration from JSON file."""
         if not self.config_path.exists():
             return {}
             
         try:
-            encrypted_data = self.config_path.read_bytes()
-            decrypted_data = self.fernet.decrypt(encrypted_data)
-            return json.loads(decrypted_data)
+            with open(self.config_path, 'r') as f:
+                return json.load(f)
         except Exception as e:
             raise ConfigurationError(f"Failed to load configuration: {str(e)}")
     
     def save(self, config: Dict[str, Any]) -> None:
-        """Save configuration securely."""
+        """Save configuration to JSON file."""
         try:
-            json_data = json.dumps(config, indent=2)
-            encrypted_data = self.fernet.encrypt(json_data.encode())
-            self.config_path.write_bytes(encrypted_data)
+            with open(self.config_path, 'w') as f:
+                json.dump(config, f, indent=2)
         except Exception as e:
             raise ConfigurationError(f"Failed to save configuration: {str(e)}")
     

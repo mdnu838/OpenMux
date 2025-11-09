@@ -32,7 +32,7 @@ jobs:
       run: |
         uv venv
         source .venv/bin/activate
-        uv pip install -e ".[ci]"
+        uv pip install -e .
         uv pip install build twine
 
     - name: Build package
