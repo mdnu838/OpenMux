@@ -58,3 +58,20 @@ Changelog = "https://github.com/yourusername/opencascade/blob/main/CHANGELOG.md"
 
 [project.scripts]
 opencascade = "opencascade.cli.main:app"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["opencascade"]
+
+[tool.setuptools.package-data]
+opencascade = ["py.typed"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

@@ -17,24 +17,28 @@ class TaskClassifier:
     
     def __init__(self):
         """Initialize the classifier with pattern rules."""
-        # Code-related patterns
-        self.code_patterns = [
-            r'\b(function|class|method|variable|implement|code|program|script)\b',
-            r'\b(python|javascript|java|c\+\+|rust|go|typescript)\b',
-            r'\b(debug|fix|refactor|optimize)\b',
+        # Strong code indicators (enough by themselves)
+        self.strong_code_patterns = [
+            r'\b(function|class|method|implement|code|program|script|debug|fix|refactor|optimize)\b',
             r'(```|`)',  # Code blocks
-            r'\b(algorithm|data structure|api)\b',
+            r'\b(algorithm|data structure)\b',
         ]
         
-        # Embeddings/search patterns
+        # Language patterns (supportive evidence)
+        self.language_patterns = [
+            r'\b(python|javascript|java|c\+\+|rust|go|typescript)\b',
+        ]
+        
+        # Embeddings/search patterns (be more specific)
         self.embeddings_patterns = [
-            r'\b(embed|embedding|vector|similarity)\b',
-            r'\b(search|find similar|semantic search)\b',
-            r'\b(index|retrieve|lookup)\b',
+            r'\b(embed|embedding|embeddings)\b',
+            r'\b(vector|vectors)\b',
+            r'\b(semantic search)\b',
         ]
         
         # Compile patterns for efficiency
-        self.code_regex = re.compile('|'.join(self.code_patterns), re.IGNORECASE)
+        self.strong_code_regex = re.compile('|'.join(self.strong_code_patterns), re.IGNORECASE)
+        self.language_regex = re.compile('|'.join(self.language_patterns), re.IGNORECASE)
         self.embeddings_regex = re.compile('|'.join(self.embeddings_patterns), re.IGNORECASE)
     
     def classify(self, query: str) -> Tuple[TaskType, float]:
@@ -48,19 +52,22 @@ class TaskClassifier:
         """
         query_lower = query.lower()
         
-        # Check for embeddings
+        # Check for embeddings first (most specific)
         if self.embeddings_regex.search(query):
             logger.info("Classified as EMBEDDINGS task")
             return TaskType.EMBEDDINGS, 0.9
         
-        # Check for code
-        code_matches = len(self.code_regex.findall(query))
-        if code_matches > 0:
-            confidence = min(0.9, 0.6 + (code_matches * 0.1))
+        # Check for strong code indicators
+        strong_code_matches = len(self.strong_code_regex.findall(query))
+        language_matches = len(self.language_regex.findall(query))
+        
+        # Strong code pattern OR (language + some context)
+        if strong_code_matches >= 1 or language_matches >= 2:
+            confidence = min(0.9, 0.7 + (strong_code_matches * 0.1))
             logger.info(f"Classified as CODE task (confidence: {confidence})")
             return TaskType.CODE, confidence
         
-        # Default to chat
+        # Default to chat (including questions about programming languages)
         logger.info("Classified as CHAT task (default)")
         return TaskType.CHAT, 0.7
     
