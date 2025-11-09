@@ -8,19 +8,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Coming Soon
-- Additional provider integrations (Anthropic, Together AI)
+- Production release to PyPI
+- Additional provider integrations (Anthropic, Together AI, Mistral)
 - Enhanced multi-model combination strategies
-- Production deployment guides
 - Performance optimization
-- Extended documentation
+- Extended API documentation
+
+### Development Builds
+**Note**: TestPyPI builds use automatic version incrementing (e.g., `0.1.100`, `0.1.101`) based on GitHub Actions run numbers to avoid conflicts. Production releases on PyPI use semantic versioning (e.g., `0.1.1`, `0.2.0`).
 
 ---
 
-## [0.1.0-alpha] - 2025-11-09
+## [0.1.1] - 2025-11-09
 
-### 🎉 Initial Alpha Release
+### 🔧 Fixed
+- **Packaging**: Fixed package structure to include all subpackages (core, providers, classifier, cli, utils)
+- **Documentation**: Updated README with TestPyPI installation instructions
+- **Documentation**: Reorganized documentation files into docs/ folder
+- **Documentation**: Updated project references from opencascade to openmux
 
-The first alpha release of OpenMux! This release includes a complete MVP with core orchestration functionality.
+### 📝 Changed
+- Moved development documentation to docs/ folder for better organization
+- Updated installation instructions with TestPyPI link
+- Improved README structure and clarity
+
+---
+
+## [0.1.0] - 2025-11-09
+
+### 🎉 Initial Release
+
+The first release of OpenMux (rebranded from OpenCascade)! Published to TestPyPI.
 
 ### ✨ Added
 
