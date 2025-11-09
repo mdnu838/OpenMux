@@ -276,17 +276,107 @@ pytest tests/unit/ -v -s --tb=long
 
 ## Release Process (Maintainers Only)
 
-1. Ensure all changes are merged to `develop`
-2. Run full test suite including live integration tests
-3. Update version in `pyproject.toml` and `openmux/__init__.py`
-4. Update CHANGELOG.md
-5. Create PR from `develop` to `main`
-6. After merge, tag the release:
-   ```bash
-   git tag -a v0.1.0 -m "Release v0.1.0"
-   git push origin v0.1.0
-   ```
-7. GitHub Actions will automatically publish to PyPI
+### Version Management
+
+We use semantic versioning (MAJOR.MINOR.PATCH):
+- **MAJOR**: Breaking changes
+- **MINOR**: New features (backward compatible)
+- **PATCH**: Bug fixes (backward compatible)
+
+### Publishing Workflow
+
+#### 1. Development → TestPyPI (develop branch)
+When you push to `develop` branch, the package is automatically published to TestPyPI:
+
+```bash
+# After merging features to develop
+git checkout develop
+git pull origin develop
+
+# Update version for next release
+# Edit pyproject.toml and openmux/__init__.py
+# Example: 0.1.0 → 0.2.0 (for new features)
+
+# Commit version bump
+git add pyproject.toml openmux/__init__.py CHANGELOG.md
+git commit -m "chore: Bump version to 0.2.0"
+git push origin develop
+
+# 🚀 GitHub Actions will automatically:
+# - Run all tests
+# - Build the package
+# - Publish to TestPyPI
+```
+
+**Test the package from TestPyPI:**
+```bash
+pip install -i https://test.pypi.org/simple/ openmux==0.2.0
+```
+
+#### 2. Production → PyPI (main branch)
+When you push to `main` branch, the package is published to production PyPI:
+
+```bash
+# Create PR: develop → main
+# After review and all tests pass, merge the PR
+
+git checkout main
+git pull origin main
+
+# 🚀 GitHub Actions will automatically:
+# - Run all tests
+# - Build the package
+# - Publish to PyPI
+# - Create a GitHub Release with tag v0.2.0
+```
+
+**Install from PyPI:**
+```bash
+pip install openmux==0.2.0
+```
+
+### Release Checklist
+
+Before pushing to `develop` or `main`:
+
+- [ ] All tests pass locally
+- [ ] Version bumped in `pyproject.toml` and `openmux/__init__.py`
+- [ ] CHANGELOG.md updated with changes
+- [ ] Documentation updated (if needed)
+- [ ] Breaking changes documented
+- [ ] Migration guide provided (if breaking changes)
+
+### Workflow Summary
+
+```
+feature/my-feature
+    ↓ (PR + merge)
+develop ──────────► TestPyPI (test.pypi.org)
+    ↓ (PR + merge)
+main ─────────────► PyPI (pypi.org) + GitHub Release
+```
+
+### Emergency Hotfix
+
+For critical bugs in production:
+
+```bash
+# Create hotfix branch from main
+git checkout main
+git pull origin main
+git checkout -b fix/critical-bug
+
+# Fix the bug, bump patch version
+# Example: 0.2.0 → 0.2.1
+
+# Push and create PR to main (skipping develop)
+git push origin fix/critical-bug
+
+# After merge to main, backport to develop
+git checkout develop
+git merge main
+git push origin develop
+```
 
 ## Need Help?
 
