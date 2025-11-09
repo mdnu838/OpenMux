@@ -1,11 +1,11 @@
 [project]
-name = "opencascade"
+name = "openmux"
 version = "0.1.0"
 description = "A free multi-source GenAI orchestration library for automatic model selection and routing"
 readme = "README.md"
 requires-python = ">=3.9"
 license = {text = "MIT"}
-keywords = ["ai", "llm", "genai", "model-selection", "orchestration", "free-models"]
+keywords = ["ai", "llm", "genai", "model-selection", "orchestration", "free-models", "openmux"]
 authors = [
     {name = "Nizam Uddin", email = "your.email@example.com"}
 ]
@@ -50,11 +50,28 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/yourusername/opencascade"
-Documentation = "https://github.com/yourusername/opencascade/tree/main/docs"
-Repository = "https://github.com/yourusername/opencascade"
-Issues = "https://github.com/yourusername/opencascade/issues"
-Changelog = "https://github.com/yourusername/opencascade/blob/main/CHANGELOG.md"
+Homepage = "https://github.com/mdnu838/OpenMux"
+Documentation = "https://github.com/mdnu838/OpenMux/tree/main/docs"
+Repository = "https://github.com/mdnu838/OpenMux"
+Issues = "https://github.com/mdnu838/OpenMux/issues"
+Changelog = "https://github.com/mdnu838/OpenMux/blob/main/CHANGELOG.md"
 
 [project.scripts]
-opencascade = "opencascade.cli.main:app"
+openmux = "openmux.cli.main:app"
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["openmux"]
+
+[tool.setuptools.package-data]
+openmux = ["py.typed"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]

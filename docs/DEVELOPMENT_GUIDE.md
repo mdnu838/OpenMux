@@ -1,8 +1,8 @@
-# OpenCascade Development Guide
+# OpenMux Development Guide
 
 ## Getting Started with Development
 
-This guide covers everything you need to know to contribute to OpenCascade development.
+This guide covers everything you need to know to contribute to OpenMux development.
 
 ---
 
@@ -10,8 +10,8 @@ This guide covers everything you need to know to contribute to OpenCascade devel
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/opencascade.git
-cd opencascade
+git clone https://github.com/yourusername/openmux.git
+cd openmux
 ```
 
 ### 2. Set Up Development Environment
@@ -33,11 +33,11 @@ uv pip install -e ".[dev]"
 pytest tests/unit -v
 
 # Check code formatting
-black --check opencascade/
-isort --check opencascade/
+black --check openmux/
+isort --check openmux/
 
 # Run linter
-ruff check opencascade/
+ruff check openmux/
 ```
 
 ---
@@ -84,7 +84,7 @@ touch tests/unit/test_module/test_feature.py
 #### Step 4: Implement Code
 ```bash
 # Create implementation file
-touch opencascade/module/feature.py
+touch openmux/module/feature.py
 
 # Implement to satisfy tests
 # - Follow code style guidelines
@@ -98,7 +98,7 @@ touch opencascade/module/feature.py
 pytest tests/unit/test_module/test_feature.py -v
 
 # Run with coverage
-pytest --cov=opencascade.module.feature --cov-report=term
+pytest --cov=openmux.module.feature --cov-report=term
 
 # Debug failing tests
 pytest -s --pdb  # Enter debugger on failure
@@ -113,15 +113,15 @@ pytest tests/unit -v
 pytest tests/integration -v
 
 # Check coverage
-pytest --cov=opencascade --cov-report=html --cov-fail-under=90
+pytest --cov=openmux --cov-report=html --cov-fail-under=90
 
 # Format code
-black opencascade/ tests/
-isort opencascade/ tests/
+black openmux/ tests/
+isort openmux/ tests/
 
 # Lint code
-ruff check opencascade/
-mypy opencascade/
+ruff check openmux/
+mypy openmux/
 ```
 
 #### Step 7: Code Review
@@ -271,7 +271,7 @@ class Example:
 # tests/unit/test_module/test_feature.py
 
 import pytest
-from opencascade.module import Feature
+from openmux.module import Feature
 
 class TestFeature:
     """Test suite for Feature class."""
@@ -341,7 +341,7 @@ pytest -x --pdb
 
 ### Logging for Debugging
 ```python
-from opencascade.utils.logging import setup_logger
+from openmux.utils.logging import setup_logger
 
 logger = setup_logger(__name__)
 
@@ -368,14 +368,14 @@ print(f"DEBUG: {variable_name=}")
 ## 🔧 Common Development Tasks
 
 ### Adding a New Provider
-1. Create `opencascade/providers/new_provider.py`
+1. Create `openmux/providers/new_provider.py`
 2. Implement `BaseProvider` interface
 3. Create `tests/unit/test_providers/test_new_provider.py`
 4. Add provider to registry
 5. Update documentation
 
 ```python
-# opencascade/providers/new_provider.py
+# openmux/providers/new_provider.py
 from .base import BaseProvider
 
 class NewProvider(BaseProvider):
@@ -391,14 +391,14 @@ class NewProvider(BaseProvider):
 ```
 
 ### Adding a New Task Type
-1. Update `opencascade/classifier/task_types.py`
+1. Update `openmux/classifier/task_types.py`
 2. Add to `TaskType` enum
 3. Update classifier rules
 4. Update tests
 5. Update documentation
 
 ### Adding a New Combination Method
-1. Update `opencascade/core/combiner.py`
+1. Update `openmux/core/combiner.py`
 2. Implement new method
 3. Add tests
 4. Update documentation
@@ -477,15 +477,15 @@ echo "Running tests..."
 pytest tests/ -v
 
 echo "Checking coverage..."
-pytest --cov=opencascade --cov-fail-under=90
+pytest --cov=openmux --cov-fail-under=90
 
 echo "Formatting code..."
-black opencascade/ tests/
-isort opencascade/ tests/
+black openmux/ tests/
+isort openmux/ tests/
 
 echo "Linting..."
-ruff check opencascade/
-mypy opencascade/
+ruff check openmux/
+mypy openmux/
 
 echo "✅ All checks passed!"
 ```
@@ -547,18 +547,18 @@ pytest tests/unit/test_file.py::test_function -vv -s
 #### Coverage Issues
 ```bash
 # Generate detailed coverage report
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 open htmlcov/index.html
 ```
 
 #### Linting Errors
 ```bash
 # Auto-fix with black and isort
-black opencascade/
-isort opencascade/
+black openmux/
+isort openmux/
 
 # Check remaining issues
-ruff check opencascade/ --fix
+ruff check openmux/ --fix
 ```
 
 ---

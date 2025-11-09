@@ -1,6 +1,6 @@
-# Contributing to OpenCascade
+# Contributing to OpenMux
 
-Thank you for your interest in contributing to OpenCascade! This document provides guidelines and instructions for contributing.
+Thank you for your interest in contributing to OpenMux! This document provides guidelines and instructions for contributing.
 
 ---
 
@@ -42,8 +42,8 @@ Thank you for your interest in contributing to OpenCascade! This document provid
 ### Setup Development Environment
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/opencascade.git
-cd opencascade
+git clone https://github.com/yourusername/openmux.git
+cd openmux
 
 # Create and activate virtual environment
 uv venv
@@ -58,7 +58,78 @@ pytest tests/unit -v
 
 ---
 
-## 🔄 Development Workflow
+## � Branching Strategy & Pull Requests
+
+**IMPORTANT**: All feature changes require a separate branch and a Pull Request to `main`.
+
+### Branch Structure
+
+```
+main (production-ready, protected)
+├── mvp-alpha (alpha testing, protected)
+├── develop (integration branch)
+└── feature/* (feature branches)
+    ├── feature/new-provider
+    ├── bugfix/fix-selector
+    └── docs/update-readme
+```
+
+### Branch Types & Naming
+
+- **`feature/*`**: New features (e.g., `feature/add-anthropic-provider`)
+- **`bugfix/*`**: Bug fixes (e.g., `bugfix/fix-selector-method`)
+- **`hotfix/*`**: Critical production fixes (e.g., `hotfix/security-patch`)
+- **`docs/*`**: Documentation updates (e.g., `docs/update-api-guide`)
+- **`test/*`**: Test improvements (e.g., `test/add-combiner-tests`)
+- **`refactor/*`**: Code refactoring (e.g., `refactor/simplify-router`)
+
+### Creating a Feature Branch
+
+```bash
+# Always start from latest main or develop
+git checkout main
+git pull origin main
+
+# Create your feature branch
+git checkout -b feature/your-feature-name
+
+# Make changes, commit regularly
+git add .
+git commit -m "feat: add new feature"
+
+# Push to GitHub
+git push origin feature/your-feature-name
+
+# Create Pull Request on GitHub
+```
+
+### Pull Request Requirements
+
+**Every PR MUST**:
+- ✅ Pass all CI/CD checks
+- ✅ Include tests for new code
+- ✅ Maintain ≥90% code coverage
+- ✅ Be reviewed and approved by a maintainer
+- ✅ Have no merge conflicts
+- ✅ Follow conventional commit format
+- ✅ Update documentation if needed
+
+### PR Title Format
+
+Use conventional commits:
+```
+<type>: <description>
+
+Examples:
+feat: Add Anthropic Claude provider
+fix: Resolve selector method name mismatch
+docs: Update installation guide
+test: Add router integration tests
+```
+
+---
+
+## �🔄 Development Workflow
 
 ### 1. Choose a Task
 - Review `docs/TASK_BREAKDOWN.md`
@@ -84,7 +155,7 @@ def test_new_feature():
 
 #### Implement Code
 ```python
-# opencascade/module/feature.py
+# openmux/module/feature.py
 def new_feature(input: str) -> str:
     """Implement the feature.
     
@@ -103,7 +174,7 @@ def new_feature(input: str) -> str:
 pytest tests/unit/test_module/test_feature.py -v
 
 # Run with coverage
-pytest --cov=opencascade.module.feature --cov-report=term
+pytest --cov=openmux.module.feature --cov-report=term
 
 # Debug if needed
 pytest -s --pdb
@@ -113,15 +184,15 @@ pytest -s --pdb
 
 ```bash
 # Format code
-black opencascade/ tests/
-isort opencascade/ tests/
+black openmux/ tests/
+isort openmux/ tests/
 
 # Lint code
-ruff check opencascade/
-mypy opencascade/
+ruff check openmux/
+mypy openmux/
 
 # Check test coverage
-pytest --cov=opencascade --cov-fail-under=90
+pytest --cov=openmux --cov-fail-under=90
 ```
 
 ### 5. Commit Changes
@@ -232,7 +303,7 @@ pytest tests/unit
 pytest tests/integration
 
 # Run with coverage
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 
 # Run in watch mode (requires pytest-watch)
 ptw
@@ -293,8 +364,8 @@ from pathlib import Path
 
 from typing import Optional, Dict, Any
 
-from opencascade.core import Base
-from opencascade.utils import logger
+from openmux.core import Base
+from openmux.utils import logger
 
 # 2. Constants
 MAX_RETRIES = 3
@@ -314,16 +385,16 @@ def my_function():
 ### Formatting Tools
 ```bash
 # Auto-format with black
-black opencascade/ tests/
+black openmux/ tests/
 
 # Sort imports with isort
-isort opencascade/ tests/
+isort openmux/ tests/
 
 # Lint with ruff
-ruff check opencascade/
+ruff check openmux/
 
 # Type check with mypy
-mypy opencascade/
+mypy openmux/
 ```
 
 ---
@@ -441,7 +512,7 @@ What actually happened
 **Environment**
 - OS: [e.g., macOS 14]
 - Python: [e.g., 3.11]
-- OpenCascade version: [e.g., 0.1.0]
+- OpenMux version: [e.g., 0.1.0]
 
 **Logs/Screenshots**
 Any relevant logs or screenshots
@@ -524,4 +595,4 @@ By contributing, you agree that your contributions will be licensed under the MI
 
 ## 🙏 Thank You!
 
-Thank you for contributing to OpenCascade! Your efforts help make this project better for everyone.
+Thank you for contributing to OpenMux! Your efforts help make this project better for everyone.

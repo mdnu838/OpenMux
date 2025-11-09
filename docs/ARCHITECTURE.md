@@ -1,8 +1,8 @@
-# OpenCascade Architecture
+# OpenMux Architecture
 
 ## System Overview
 
-OpenCascade is designed as a modular, extensible system for orchestrating free GenAI models. The architecture follows clean separation of concerns with clear interfaces between components.
+OpenMux is designed as a modular, extensible system for orchestrating free GenAI models. The architecture follows clean separation of concerns with clear interfaces between components.
 
 ---
 
@@ -453,7 +453,7 @@ class HardwareDetector:
 
 ### Custom Providers
 ```python
-from opencascade.providers.base import BaseProvider
+from openmux.providers.base import BaseProvider
 
 class CustomProvider(BaseProvider):
     @property
@@ -465,7 +465,7 @@ class CustomProvider(BaseProvider):
 
 ### Custom Classifiers
 ```python
-from opencascade.classifier.base import BaseClassifier
+from openmux.classifier.base import BaseClassifier
 
 class CustomClassifier(BaseClassifier):
     def classify(self, query: str) -> Tuple[TaskType, float]:
@@ -475,7 +475,7 @@ class CustomClassifier(BaseClassifier):
 
 ### Custom Combiners
 ```python
-from opencascade.core.combiner import BaseCombiner
+from openmux.core.combiner import BaseCombiner
 
 class CustomCombiner(BaseCombiner):
     def combine(self, responses: List[str]) -> str:

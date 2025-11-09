@@ -1,0 +1,41 @@
+{
+  "version": "0.1.0-alpha",
+  "defaults": {
+    "timeout": 30.0,
+    "max_retries": 3,
+    "temperature": 0.7,
+    "top_p": 0.9,
+    "max_tokens": 512
+  },
+  "providers": {
+    "openrouter": {
+      "enabled": true,
+      "priority": 1,
+      "api_base": "https://openrouter.ai/api/v1"
+    },
+    "huggingface": {
+      "enabled": true,
+      "priority": 2,
+      "api_base": "https://api-inference.huggingface.co/models/"
+    },
+    "ollama": {
+      "enabled": true,
+      "priority": 3,
+      "api_base": "http://localhost:11434",
+      "default_model": "llama2"
+    }
+  },
+  "fallback": {
+    "enabled": true,
+    "provider": "ollama"
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": null
+  },
+  "cache": {
+    "enabled": false,
+    "ttl": 3600
+  }
+}

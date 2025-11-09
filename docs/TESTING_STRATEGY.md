@@ -1,7 +1,7 @@
-# OpenCascade Testing Strategy
+# OpenMux Testing Strategy
 
 ## Overview
-This document outlines the comprehensive testing strategy for OpenCascade, ensuring every line of code is covered by tests and includes automatic debugging capabilities.
+This document outlines the comprehensive testing strategy for OpenMux, ensuring every line of code is covered by tests and includes automatic debugging capabilities.
 
 ---
 
@@ -70,7 +70,7 @@ tests/
 # tests/unit/test_module/test_feature.py
 
 import pytest
-from opencascade.module import Feature
+from openmux.module import Feature
 
 class TestFeature:
     """Test suite for Feature functionality."""
@@ -121,7 +121,7 @@ import pytest
 class TestProviderWithMocks:
     """Test provider with mocked API calls."""
     
-    @patch('opencascade.providers.openrouter.aiohttp.ClientSession')
+    @patch('openmux.providers.openrouter.aiohttp.ClientSession')
     async def test_api_call_success(self, mock_session):
         """Test successful API call."""
         # Setup mock
@@ -137,7 +137,7 @@ class TestProviderWithMocks:
         # Assert
         assert result == "success"
     
-    @patch('opencascade.providers.openrouter.aiohttp.ClientSession')
+    @patch('openmux.providers.openrouter.aiohttp.ClientSession')
     async def test_api_call_failure(self, mock_session):
         """Test API call failure handling."""
         # Setup mock to fail
@@ -167,8 +167,8 @@ class TestProviderWithMocks:
 # tests/integration/test_end_to_end.py
 
 import pytest
-from opencascade import Orchestrator
-from opencascade.providers import OpenRouterProvider, OllamaProvider
+from openmux import Orchestrator
+from openmux.providers import OpenRouterProvider, OllamaProvider
 
 @pytest.mark.integration
 class TestEndToEnd:
@@ -277,7 +277,7 @@ Every test includes comprehensive logging:
 
 ```python
 import logging
-from opencascade.utils.logging import setup_logger
+from openmux.utils.logging import setup_logger
 
 class TestWithDebugLogging:
     """Test with detailed debug logging."""
@@ -412,7 +412,7 @@ def test_with_root_cause_analysis(self):
 ```ini
 # .coveragerc
 [run]
-source = opencascade
+source = openmux
 omit = 
     */tests/*
     */venv/*
@@ -430,10 +430,10 @@ directory = htmlcov
 ### Running Coverage
 ```bash
 # Generate coverage report
-pytest --cov=opencascade --cov-report=html --cov-report=term
+pytest --cov=openmux --cov-report=html --cov-report=term
 
 # Check coverage meets threshold
-pytest --cov=opencascade --cov-fail-under=90
+pytest --cov=openmux --cov-fail-under=90
 ```
 
 ### Coverage Analysis
@@ -573,7 +573,7 @@ jobs:
     
     - name: Run unit tests
       run: |
-        pytest tests/unit -v --cov=opencascade --cov-report=xml
+        pytest tests/unit -v --cov=openmux --cov-report=xml
     
     - name: Run integration tests
       run: |
@@ -581,7 +581,7 @@ jobs:
     
     - name: Check coverage
       run: |
-        pytest --cov=opencascade --cov-fail-under=90
+        pytest --cov=openmux --cov-fail-under=90
     
     - name: Upload coverage
       uses: codecov/codecov-action@v3
@@ -630,7 +630,7 @@ def analyze_test_failures():
 pytest
 
 # Run with coverage
-pytest --cov=opencascade --cov-report=html
+pytest --cov=openmux --cov-report=html
 
 # Run specific test file
 pytest tests/unit/test_orchestrator.py

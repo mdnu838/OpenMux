@@ -1,4 +1,4 @@
-# OpenCascade - Comprehensive Task Breakdown
+# OpenMux - Comprehensive Task Breakdown
 
 ## Task Organization Principles
 - **One Task = One Prompt**: Each task should be completable in a single prompt
@@ -15,7 +15,7 @@
 **Dependencies**: None  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/utils/config.py`
+- `openmux/utils/config.py`
 - `tests/unit/test_utils/test_config.py`
 - `tests/integration/test_config_integration.py`
 
@@ -47,8 +47,8 @@
 **Dependencies**: Task 1.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/utils/logging.py`
-- `opencascade/utils/metrics.py`
+- `openmux/utils/logging.py`
+- `openmux/utils/metrics.py`
 - `tests/unit/test_utils/test_logging.py`
 - `tests/unit/test_utils/test_metrics.py`
 
@@ -81,8 +81,8 @@
 **Dependencies**: Task 1.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/utils/security.py`
-- `opencascade/utils/validators.py`
+- `openmux/utils/security.py`
+- `openmux/utils/validators.py`
 - `tests/unit/test_utils/test_security.py`
 - `tests/unit/test_utils/test_validators.py`
 
@@ -116,8 +116,8 @@
 **Dependencies**: Task 1.1, 1.2  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/base.py`
-- `opencascade/providers/registry.py`
+- `openmux/providers/base.py`
+- `openmux/providers/registry.py`
 - `tests/unit/test_providers/test_base.py`
 - `tests/unit/test_providers/test_registry.py`
 
@@ -150,7 +150,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/openrouter.py`
+- `openmux/providers/openrouter.py`
 - `tests/unit/test_providers/test_openrouter.py`
 - `tests/integration/test_openrouter_integration.py`
 
@@ -185,7 +185,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/huggingface.py`
+- `openmux/providers/huggingface.py`
 - `tests/unit/test_providers/test_huggingface.py`
 - `tests/integration/test_huggingface_integration.py`
 
@@ -218,7 +218,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/ollama.py`
+- `openmux/providers/ollama.py`
 - `tests/unit/test_providers/test_ollama.py`
 - `tests/integration/test_ollama_integration.py`
 
@@ -252,7 +252,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/together.py`
+- `openmux/providers/together.py`
 - `tests/unit/test_providers/test_together.py`
 - `tests/integration/test_together_integration.py`
 
@@ -282,7 +282,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/mistral.py`
+- `openmux/providers/mistral.py`
 - `tests/unit/test_providers/test_mistral.py`
 - `tests/integration/test_mistral_integration.py`
 
@@ -309,7 +309,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/lmstudio.py`
+- `openmux/providers/lmstudio.py`
 - `tests/unit/test_providers/test_lmstudio.py`
 - `tests/integration/test_lmstudio_integration.py`
 
@@ -337,7 +337,7 @@
 **Dependencies**: Task 2.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/providers/local.py`
+- `openmux/providers/local.py`
 - `tests/unit/test_providers/test_local.py`
 - `tests/integration/test_local_integration.py`
 
@@ -367,7 +367,7 @@
 **Dependencies**: Task 1.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/classifier/task_types.py`
+- `openmux/classifier/task_types.py`
 - `tests/unit/test_classifier/test_task_types.py`
 
 **Deliverables**:
@@ -392,7 +392,7 @@
 **Dependencies**: Task 3.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/classifier/rule_based.py`
+- `openmux/classifier/rule_based.py`
 - `tests/unit/test_classifier/test_rule_based.py`
 
 **Deliverables**:
@@ -417,7 +417,7 @@
 **Dependencies**: Task 3.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/classifier/ml_classifier.py`
+- `openmux/classifier/ml_classifier.py`
 - `tests/unit/test_classifier/test_ml_classifier.py`
 
 **Deliverables**:
@@ -442,7 +442,7 @@
 **Dependencies**: Task 3.2, 3.3  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/classifier/classifier.py`
+- `openmux/classifier/classifier.py`
 - `tests/unit/test_classifier/test_classifier.py`
 - `tests/integration/test_classifier_integration.py`
 
@@ -471,7 +471,7 @@
 **Dependencies**: Task 2.8, 3.4  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/core/selector.py`
+- `openmux/core/selector.py`
 - `tests/unit/test_selector.py`
 
 **Deliverables**:
@@ -496,7 +496,7 @@
 **Dependencies**: Task 4.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/core/router.py`
+- `openmux/core/router.py`
 - `tests/unit/test_router.py`
 
 **Deliverables**:
@@ -521,7 +521,7 @@
 **Dependencies**: Task 4.2  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/core/combiner.py`
+- `openmux/core/combiner.py`
 - `tests/unit/test_combiner.py`
 
 **Deliverables**:
@@ -546,7 +546,7 @@
 **Dependencies**: Task 4.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/core/fallback.py`
+- `openmux/core/fallback.py`
 - `tests/unit/test_fallback.py`
 
 **Deliverables**:
@@ -571,7 +571,7 @@
 **Dependencies**: Task 4.1, 4.2, 4.3, 4.4  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/core/orchestrator.py`
+- `openmux/core/orchestrator.py`
 - `tests/unit/test_orchestrator.py`
 - `tests/integration/test_end_to_end.py`
 
@@ -600,7 +600,7 @@
 **Dependencies**: Task 1.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/models/hardware.py`
+- `openmux/models/hardware.py`
 - `tests/unit/test_models/test_hardware.py`
 
 **Deliverables**:
@@ -625,7 +625,7 @@
 **Dependencies**: Task 5.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/models/cache.py`
+- `openmux/models/cache.py`
 - `tests/unit/test_models/test_cache.py`
 
 **Deliverables**:
@@ -650,7 +650,7 @@
 **Dependencies**: Task 5.1, 5.2  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/models/loader.py`
+- `openmux/models/loader.py`
 - `tests/unit/test_models/test_loader.py`
 
 **Deliverables**:
@@ -675,7 +675,7 @@
 **Dependencies**: Task 5.1, 5.2, 5.3  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/models/manager.py`
+- `openmux/models/manager.py`
 - `tests/unit/test_models/test_manager.py`
 - `tests/integration/test_offline_mode.py`
 
@@ -704,7 +704,7 @@
 **Dependencies**: Task 4.5  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/cli/commands.py`
+- `openmux/cli/commands.py`
 - `tests/unit/test_cli/test_commands.py`
 
 **Deliverables**:
@@ -729,7 +729,7 @@
 **Dependencies**: Task 6.1  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/cli/main.py`
+- `openmux/cli/main.py`
 - `tests/integration/test_cli_integration.py`
 
 **Deliverables**:
@@ -825,7 +825,7 @@
 **Dependencies**: All previous tasks  
 **Estimated Effort**: 1 prompt  
 **Files to Create**:
-- `opencascade/utils/benchmarks.py`
+- `openmux/utils/benchmarks.py`
 - `tests/benchmarks/`
 
 **Deliverables**:

@@ -1,0 +1,71 @@
+name: Publish to PyPI
+
+on:
+  push:
+    branches:
+      - main
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Build and Publish to PyPI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: Install build dependencies
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install build twine
+
+    - name: Build package
+      run: |
+        source .venv/bin/activate
+        python -m build
+
+    - name: Check package
+      run: |
+        source .venv/bin/activate
+        twine check dist/*
+
+    - name: Publish to TestPyPI (on branch push)
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.TESTPYPI_TOKEN }}
+      run: |
+        source .venv/bin/activate
+        twine upload --repository testpypi dist/* --skip-existing || true
+
+    - name: Publish to PyPI (on release)
+      if: github.event_name == 'release'
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        source .venv/bin/activate
+        twine upload dist/*
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist-packages
+        path: dist/
+        retention-days: 30

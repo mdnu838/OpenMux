@@ -1,0 +1,80 @@
+{
+  "openrouter": {
+    "models": [
+      {
+        "id": "meta-llama/llama-2-70b-chat",
+        "name": "Llama 2 70B Chat",
+        "task_types": ["chat", "code"],
+        "context_length": 4096,
+        "free": true
+      },
+      {
+        "id": "mistralai/mistral-7b-instruct",
+        "name": "Mistral 7B Instruct",
+        "task_types": ["chat", "code"],
+        "context_length": 8192,
+        "free": true
+      },
+      {
+        "id": "google/gemma-7b-it",
+        "name": "Gemma 7B IT",
+        "task_types": ["chat"],
+        "context_length": 8192,
+        "free": true
+      }
+    ]
+  },
+  "huggingface": {
+    "models": [
+      {
+        "id": "meta-llama/Llama-2-7b-chat-hf",
+        "name": "Llama 2 7B Chat",
+        "task_types": ["chat"],
+        "context_length": 4096,
+        "free": true
+      },
+      {
+        "id": "bigcode/starcoder",
+        "name": "StarCoder",
+        "task_types": ["code"],
+        "context_length": 8192,
+        "free": true
+      },
+      {
+        "id": "sentence-transformers/all-MiniLM-L6-v2",
+        "name": "All MiniLM L6 v2",
+        "task_types": ["embeddings"],
+        "dimensions": 384,
+        "free": true
+      }
+    ]
+  },
+  "ollama": {
+    "models": [
+      {
+        "id": "llama2",
+        "name": "Llama 2",
+        "task_types": ["chat", "code"],
+        "context_length": 4096,
+        "free": true,
+        "offline": true
+      },
+      {
+        "id": "codellama",
+        "name": "Code Llama",
+        "task_types": ["code"],
+        "context_length": 4096,
+        "free": true,
+        "offline": true
+      },
+      {
+        "id": "mistral",
+        "name": "Mistral",
+        "task_types": ["chat", "code"],
+        "context_length": 8192,
+        "free": true,
+        "offline": true
+      }
+    ]
+  }
+}

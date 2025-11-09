@@ -1,4 +1,4 @@
-# OpenCascade - Documentation Summary
+# OpenMux - Documentation Summary
 
 ## ✅ Documentation Complete
 
@@ -11,8 +11,8 @@ All project documentation has been created and organized according to the projec
 The project follows a clean, modular structure with clear separation of concerns:
 
 ```
-OpenCascade/
-├── opencascade/              # Main package
+OpenMux/
+├── openmux/              # Main package
 │   ├── core/                 # Core orchestration
 │   ├── providers/            # Provider integrations
 │   ├── classifier/           # Task classification
@@ -290,7 +290,7 @@ Before moving to next task:
 
 ## ✨ Summary
 
-OpenCascade has a complete documentation system that enables:
+OpenMux has a complete documentation system that enables:
 - **Structured Development**: Clear task breakdown
 - **Quality Assurance**: Comprehensive testing
 - **Easy Contribution**: Detailed guidelines
