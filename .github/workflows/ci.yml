@@ -37,7 +37,7 @@ jobs:
       run: |
         uv venv
         source .venv/bin/activate
-        uv pip install -e ".[dev]"
+        uv pip install -e ".[dev,ci]"
         uv pip install pytest pytest-asyncio pytest-cov
 
     - name: Run unit tests
