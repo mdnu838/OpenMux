@@ -19,6 +19,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.10] - 2025-01-10
+
+### ✨ Added
+- **Custom Exception Classes**: Complete exception hierarchy with 10+ specific exception types
+  - `OpenMuxError` base class for all custom exceptions
+  - `ConfigurationError` with helpful setup suggestions
+  - `ProviderError`, `ProviderUnavailableError` for provider issues
+  - `APIError` with status code-specific guidance (401, 429, 500+)
+  - `NoProvidersAvailableError` lists available providers and task support
+  - `FailoverError` shows all attempted providers
+  - `ClassificationError`, `ValidationError`, `TimeoutError`, `ModelNotFoundError`
+
+### 🔧 Improved
+- **Error Messages**: All exceptions now include helpful suggestions and context
+  - ConfigurationError suggests running `openmux init`
+  - APIError provides status-specific troubleshooting
+  - NoProvidersAvailableError shows which providers are available
+  - TimeoutError suggests increasing timeout or checking network
+- **Developer Experience**: 39 new exception tests ensuring clear error messages
+- **Code Quality**: Replaced 19 generic `Exception()` calls with specific custom exceptions
+
+### 📊 Testing
+- **90 unit tests** passing (51 → 90 tests)
+- **39 new exception tests** covering all exception types and hierarchies
+- Test coverage for exception messages, inheritance, and error handling patterns
+
+---
+
+## [0.1.9] - 2025-01-10
+
+### ✨ Added
+- **Provider Health Checks**: Automatic health monitoring system
+  - `ProviderHealth` class tracking metrics (success rate, response time, error count)
+  - `health_check()` async method for provider validation
+  - Configurable timeout (default 5s)
+  - Automatic metric updates on success/failure
+- **Failover Logic**: Automatic provider switching on failures
+  - `Router.route_with_failover()` tries providers sequentially
+  - Exponential backoff between provider switches
+  - `Selector.select_with_fallbacks()` returns primary + backup providers
+  - Configurable max fallbacks (default 2)
+- **Enhanced Model Selection**: Preference-based provider selection
+  - User-specified provider preferences respected
+  - Automatic fallback to best available provider
+
+### 📊 Testing
+- **51 unit tests** passing (36 → 51 tests)
+- **15 new health check tests** covering metrics, timeouts, recovery
+- **10 new failover tests** for retry logic and provider switching
+
+---
+
 ## [0.1.1] - 2025-11-09
 
 ### 🔧 Fixed

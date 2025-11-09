@@ -20,11 +20,13 @@
 | Create `openmux init` wizard | ✅ | HIGH | 2 days | `click` or `typer` CLI library |
 | Validate API keys on init | ✅ | MEDIUM | 1 day | OpenRouter API docs |
 | Generate default config | ✅ | MEDIUM | 1 day | Template files |
-| Better error messages | ✅ | HIGH | 2 days | Error message library |
+| Custom exception classes | ✅ | HIGH | 2 days | Exception hierarchy design |
+| Better error messages | ✅ | HIGH | 1 day | Helpful suggestion system |
 
-**Total Effort:** 1 week ✅ **COMPLETED**  
+**Total Effort:** 1 week ✅ **COMPLETED - Version 0.1.10**  
 **Dependencies:** OpenRouter API key for testing  
 **Deliverable:** `pip install openmux && openmux init && openmux chat "hi"` ✅
+**Tests:** 90 unit tests (39 exception tests added)
 
 ---
 
@@ -56,12 +58,12 @@
 | Response time tracking | ✅ | MEDIUM | 1 day | Time metrics library |
 | Model preference system | ✅ | LOW | 2 days | User config schema |
 
-**Total Effort:** 1.5 weeks ✅ **COMPLETED**
+**Total Effort:** 1.5 weeks ✅ **COMPLETED - Version 0.1.9**
 **Dependencies:**
 - OpenRouter API (model list)
 - Benchmark datasets   
 **Deliverable:** Automatic failover working ✅
-**Version:** 0.1.9 - 51 unit tests passing
+**Tests:** 51 unit tests passing (15 health check tests)
 
 ---
 
