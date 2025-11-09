@@ -52,6 +52,25 @@ class Orchestrator:
         
         logger.info("Orchestrator initialized")
     
+    def __enter__(self):
+        """Context manager entry."""
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        """Context manager exit - cleanup resources."""
+        self.cleanup()
+        return False
+    
+    def cleanup(self):
+        """Cleanup resources (close provider sessions)."""
+        # Close all provider sessions
+        for provider in self.registry.get_all_available():
+            if hasattr(provider, '_session') and provider._session:
+                try:
+                    asyncio.run(provider._session.close())
+                except Exception as e:
+                    logger.warning(f"Error closing provider session: {e}")
+    
     def _initialize_selector(self):
         """Initialize model selector with available providers."""
         if self.selector is None:
@@ -107,16 +126,37 @@ class Orchestrator:
             logger.info(f"No task type specified, defaulting to {task_type}")
         
         try:
-            # Select best provider
-            provider = self.selector.select_single(task_type)
+            # Check if failover is enabled (default: True)
+            enable_failover = kwargs.get('enable_failover', True)
             
-            if provider is None:
-                raise Exception(f"No provider available for task: {task_type}")
-            
-            # Route query to provider
-            response = await self.router.route_single(provider, query, **kwargs)
-            
-            return response
+            if enable_failover:
+                # Get primary + fallback providers
+                providers = self.selector.select_with_fallbacks(
+                    task_type,
+                    max_fallbacks=kwargs.get('max_fallbacks', 2),
+                    preferences=kwargs.get('provider_preference')
+                )
+                
+                if not providers:
+                    raise Exception(f"No provider available for task: {task_type}")
+                
+                # Try providers with automatic failover
+                response, provider_name = await self.router.route_with_failover(
+                    providers, query, **kwargs
+                )
+                logger.info(f"Query processed successfully by {provider_name}")
+                return response
+            else:
+                # Original single-provider logic
+                provider = self.selector.select_single(task_type)
+                
+                if provider is None:
+                    raise Exception(f"No provider available for task: {task_type}")
+                
+                # Route query to provider
+                response = await self.router.route_single(provider, query, **kwargs)
+                
+                return response
             
         except Exception as e:
             logger.error(f"Error processing query: {e}")

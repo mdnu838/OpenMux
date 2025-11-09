@@ -80,13 +80,63 @@ class ModelSelector:
         # Filter providers that support the task
         suitable_providers = [
             p for p in self.providers
-            if task_type.value in p.supported_tasks()
+            if p.supports_task(task_type)
         ]
         
         # Return up to 'count' providers
         selected = suitable_providers[:count]
         logger.info(
             f"Selected {len(selected)} providers: "
+            f"{[p.name for p in selected]} for task: {task_type}"
+        )
+        
+        return selected
+    
+    def select_with_fallbacks(
+        self,
+        task_type: TaskType,
+        max_fallbacks: int = 2,
+        preferences: Optional[List[str]] = None
+    ) -> List[BaseProvider]:
+        """Select provider with fallback options.
+        
+        Returns primary provider plus fallback alternatives.
+        
+        Args:
+            task_type: The type of task to perform
+            max_fallbacks: Maximum number of fallback providers
+            preferences: Optional list of preferred provider names
+            
+        Returns:
+            List of providers (primary + fallbacks)
+        """
+        logger.debug(
+            f"Selecting provider with {max_fallbacks} fallbacks for task: {task_type}"
+        )
+        
+        # Filter providers that support the task
+        suitable_providers = [
+            p for p in self.providers
+            if p.supports_task(task_type)
+        ]
+        
+        if not suitable_providers:
+            logger.warning(f"No providers found for task type: {task_type}")
+            return []
+        
+        # Apply preferences if specified
+        if preferences:
+            preferred = [p for p in suitable_providers if p.name in preferences]
+            non_preferred = [p for p in suitable_providers if p.name not in preferences]
+            # Preferred providers first, then others
+            suitable_providers = preferred + non_preferred
+        
+        # Return primary + up to max_fallbacks providers
+        count = min(len(suitable_providers), max_fallbacks + 1)
+        selected = suitable_providers[:count]
+        
+        logger.info(
+            f"Selected {len(selected)} providers (1 primary + {len(selected)-1} fallbacks): "
             f"{[p.name for p in selected]} for task: {task_type}"
         )
         
