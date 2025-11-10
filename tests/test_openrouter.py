@@ -1,36 +1,43 @@
 """Tests for OpenRouter provider."""
 
 import pytest
-import asyncio
+from unittest.mock import patch
 from openmux.providers.openrouter import OpenRouterProvider
+from openmux.classifier.task_types import TaskType
+
+
+def test_openrouter_initialization():
+    """Test OpenRouter provider initialization."""
+    provider = OpenRouterProvider()
+    assert provider.name == "OpenRouter"  # Capital O and R
+    assert provider.base_url == "https://openrouter.ai/api/v1"
+
+
+@patch.dict('os.environ', {}, clear=True)
+def test_openrouter_availability_without_key():
+    """Test availability check without API key."""
+    provider = OpenRouterProvider(api_key=None)
+    assert provider.is_available() is False
+
+
+def test_openrouter_availability_with_key():
+    """Test availability check with API key."""
+    provider = OpenRouterProvider(api_key="test-key")
+    assert provider.is_available() is True
+
+
+def test_openrouter_task_support():
+    """Test task type support."""
+    provider = OpenRouterProvider()
+    assert provider.supports_task(TaskType.CHAT) is True
+    assert provider.supports_task(TaskType.CODE) is True
+    assert provider.supports_task(TaskType.EMBEDDINGS) is False
+
 
 @pytest.mark.asyncio
-async def test_openrouter_initialization():
-    provider = OpenRouterProvider()
-    assert provider.name == "openrouter"
-    assert await provider.supported_tasks() == []  # Empty when no connection
-
-@pytest.mark.asyncio
-async def test_openrouter_health_check():
-    provider = OpenRouterProvider()
-    health = await provider.health_check()
-    assert "status" in health
-    assert "timestamp" in health
-
-@pytest.mark.asyncio
-async def test_openrouter_capabilities():
-    provider = OpenRouterProvider()
-    capabilities = await provider.get_capabilities()
-    assert isinstance(capabilities, dict)
-
-@pytest.mark.asyncio
-async def test_openrouter_availability():
-    provider = OpenRouterProvider()
-    is_available = await provider.is_available()
-    assert isinstance(is_available, bool)
-
-@pytest.mark.asyncio
-async def test_openrouter_generation():
-    provider = OpenRouterProvider()
-    with pytest.raises(Exception):  # Should fail without API key
-        await provider.generate("Test prompt")
+async def test_openrouter_generation_without_key():
+    """Test that generation fails without API key."""
+    with patch.dict('os.environ', {}, clear=True):
+        provider = OpenRouterProvider(api_key=None)
+        with pytest.raises(Exception):  # Should raise ConfigurationError
+            await provider.generate("test query")
