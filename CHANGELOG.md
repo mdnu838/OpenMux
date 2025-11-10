@@ -19,6 +19,42 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.3] - 2025-01-11
+
+### ✨ Added
+- **pytest-benchmark**: Added to dev dependencies for performance testing
+  - Enables 8 benchmark tests (response time, QPS, memory, throughput)
+  - Infrastructure now in place for systematic performance tracking
+
+- **Serper API folder**: Created git-ignored serper/ folder for API research
+  - README with setup instructions
+  - .env.example for Serper API key
+  - search_providers.py script for discovering new free AI providers
+  - Keeps research scripts separate and private
+
+### 🔧 Fixed
+- **test_openrouter.py**: Fixed 4 outdated tests (now 5/5 passing)
+  - Updated provider name: `openrouter` → `OpenRouter`
+  - Removed non-existent methods (health_check, get_capabilities, supported_tasks)
+  - Fixed is_available() with proper environment mocking
+  - All tests now match current provider API
+
+### 📈 Improved
+- **Test Count**: 154 → **164 tests** (+10 tests)
+  - Unit tests: 127 (includes 5 OpenRouter tests)
+  - Integration: 24 tests
+  - Live API: 5 tests
+  - Benchmarks: 8 tests (now executable)
+- **Pass Rate**: 133/164 passing (81%) - some failures due to API rate limits
+- **Test Infrastructure**: Benchmark framework operational
+
+### 🛠️ Infrastructure
+- Git-ignored serper/ folder for future API discovery work
+- Proper test mocking patterns for environment variables
+- Benchmark tests ready for systematic performance tracking
+
+---
+
 ## [0.2.2] - 2025-01-11
 
 ### ✨ Added
