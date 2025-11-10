@@ -14,7 +14,7 @@ We release patches for security vulnerabilities for the following versions:
 
 Instead, please report them privately by:
 
-1. **Email**: [Add security contact email]
+1. **Email**: mdnu08@gmail.com
 2. **GitHub Security Advisories**: Use the "Security" tab in this repository
 
 ### What to Include
@@ -192,7 +192,7 @@ If a security incident occurs:
 
 For security concerns, contact:
 - **GitHub Security**: Use "Security" tab
-- **Email**: [To be added]
+- **Email**: mdnu08@gmail.com
 
 ---
 

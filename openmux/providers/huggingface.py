@@ -31,12 +31,14 @@ class HuggingFaceProvider(BaseProvider):
         super().__init__(name="HuggingFace")
         
         self.api_token = api_token or os.getenv("HF_TOKEN")
-        self.base_url = "https://api-inference.huggingface.co/models/"
+        # Updated to new HuggingFace inference endpoint (Nov 2024)
+        self.base_url = "https://router.huggingface.co/hf-inference/"
         
         # Default models for different task types
+        # Using smaller, fast models for testing (lightweight and available)
         self.default_models = {
-            TaskType.CHAT: "meta-llama/Llama-2-7b-chat-hf",
-            TaskType.CODE: "bigcode/starcoder",
+            TaskType.CHAT: "gpt2",  # Fast, always available
+            TaskType.CODE: "Salesforce/codegen-350M-mono",  # Smaller code model
             TaskType.EMBEDDINGS: "sentence-transformers/all-MiniLM-L6-v2"
         }
         
