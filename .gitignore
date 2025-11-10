@@ -15,6 +15,8 @@ config/secrets.json
 
 # Serper API scripts and research tools
 serper/
+!serper/README.md
+!serper/.env.example
 *.serper.json
 
 # =====================================
