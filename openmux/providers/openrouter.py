@@ -7,6 +7,7 @@ import json
 from datetime import datetime
 
 from .base import BaseProvider
+from ..utils.exceptions import ConfigurationError, APIError
 
 
 class OpenRouterProvider(BaseProvider):
@@ -55,7 +56,10 @@ class OpenRouterProvider(BaseProvider):
             Generated response
         """
         if not self.api_key:
-            raise Exception("OpenRouter API key not configured")
+            raise ConfigurationError(
+                "OpenRouter API key not configured",
+                "Set OPENROUTER_API_KEY in your .env file or run 'openmux init'"
+            )
         
         # Use a working free model - try google/gemma-2-9b-it:free or mistralai/mistral-7b-instruct:free
         model = kwargs.get("model", "mistralai/mistral-7b-instruct:free")
@@ -81,7 +85,11 @@ class OpenRouterProvider(BaseProvider):
         ) as response:
             if response.status != 200:
                 error_text = await response.text()
-                raise Exception(f"OpenRouter API error {response.status}: {error_text}")
+                raise APIError(
+                    "OpenRouter",
+                    status_code=response.status,
+                    response_text=error_text
+                )
                 
             result = await response.json()
             

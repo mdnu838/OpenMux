@@ -19,7 +19,7 @@ try:
         load_dotenv(env_file)
     else:
         # Try to find .env in parent directories (up to 3 levels)
-        for parent in current_dir.parents[:3]:
+        for parent in list(current_dir.parents)[:3]:
             env_file = parent / ".env"
             if env_file.exists():
                 load_dotenv(env_file)

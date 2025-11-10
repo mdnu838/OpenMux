@@ -5,6 +5,7 @@ import logging
 from typing import List, Optional, Tuple
 
 from ..providers.base import BaseProvider
+from ..utils.exceptions import ProviderError, FailoverError, TimeoutError as OpenMuxTimeoutError
 
 
 logger = logging.getLogger(__name__)
@@ -60,7 +61,10 @@ class Router:
                     f"for provider {provider.name}"
                 )
                 if attempt == self.max_retries - 1:
-                    raise
+                    raise OpenMuxTimeoutError(
+                        f"Request to {provider.name}",
+                        self.timeout
+                    )
                     
             except Exception as e:
                 logger.error(
@@ -68,7 +72,9 @@ class Router:
                     f"for provider {provider.name}: {e}"
                 )
                 if attempt == self.max_retries - 1:
-                    raise
+                    if isinstance(e, ProviderError):
+                        raise
+                    raise ProviderError(provider.name, str(e))
                     
             # Wait before retry (exponential backoff)
             if attempt < self.max_retries - 1:
@@ -76,7 +82,8 @@ class Router:
                 logger.debug(f"Waiting {wait_time}s before retry")
                 await asyncio.sleep(wait_time)
         
-        raise Exception(f"Failed to get response from {provider.name}")
+        # Should never reach here, but just in case
+        raise ProviderError(provider.name, "All retry attempts exhausted")
     
     async def route_multiple(
         self,
@@ -166,6 +173,6 @@ class Router:
                     await asyncio.sleep(wait_time)
         
         # All providers failed
-        error_msg = f"All {len(providers)} providers failed. Last error: {last_error}"
-        logger.error(error_msg)
-        raise Exception(error_msg)
+        provider_names = [p.name for p in providers]
+        logger.error(f"All {len(providers)} providers failed")
+        raise FailoverError(provider_names, last_error)

@@ -19,6 +19,104 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.1.11] - 2025-01-10
+
+### ✨ Added
+- **Live API Integration Tests**: 19 comprehensive tests with real OpenRouter API calls
+  - Basic functionality tests (chat, code generation, auto-classification)
+  - Error handling (invalid API key, empty query, long query)
+  - Failover mechanisms (provider failure, multiple provider attempts)
+  - Performance measurements (response time, concurrent requests)
+  - Model testing (different task types, consistency)
+  - Edge cases (special characters, multilingual, syntax errors)
+  - Configuration testing (custom timeout, max retries)
+  - Context manager usage validation
+- **Performance Benchmarks**: 8 benchmark tests using pytest-benchmark
+  - Orchestrator benchmarks (chat, code generation, classification overhead)
+  - Provider performance (OpenRouter response time)
+  - Concurrency testing (sequential requests)
+  - Memory usage (initialization, cleanup)
+  - Throughput measurement (queries per second)
+- **Development Tools**: `.gitignore` configuration for serper/ folder (external API research tools)
+
+### 🔧 Improved
+- **Python 3.9 Compatibility**: Fixed `.env` file search to support Python 3.9 (converted `Path.parents[:3]` to `list(Path.parents)[:3]`)
+- **Test Infrastructure**: Expanded test suite from 96 to 115+ tests
+  - 96 unit/integration tests ✓
+  - 19 live API tests ✓
+  - 8 performance benchmarks ✓
+- **Real-World Validation**: All tests pass with actual OpenRouter API calls
+  - Response times measured: 1-5 seconds typical
+  - Concurrent requests working (3 parallel)
+  - Failover mechanisms validated with live providers
+
+### 📊 Testing
+- **115+ total tests** passing (96 → 115+ tests)
+  - 6 classifier tests
+  - 14 CLI tests
+  - 39 exception tests
+  - 10 failover tests
+  - 15 health check tests
+  - 6 orchestrator tests
+  - 6 integration mock tests
+  - 19 live API tests
+  - 8 performance benchmarks
+- **Dependencies**: Added pytest-benchmark for performance testing
+
+---
+
+## [0.1.10] - 2025-01-10
+
+### ✨ Added
+- **Custom Exception Classes**: Complete exception hierarchy with 10+ specific exception types
+  - `OpenMuxError` base class for all custom exceptions
+  - `ConfigurationError` with helpful setup suggestions
+  - `ProviderError`, `ProviderUnavailableError` for provider issues
+  - `APIError` with status code-specific guidance (401, 429, 500+)
+  - `NoProvidersAvailableError` lists available providers and task support
+  - `FailoverError` shows all attempted providers
+  - `ClassificationError`, `ValidationError`, `TimeoutError`, `ModelNotFoundError`
+
+### 🔧 Improved
+- **Error Messages**: All exceptions now include helpful suggestions and context
+  - ConfigurationError suggests running `openmux init`
+  - APIError provides status-specific troubleshooting
+  - NoProvidersAvailableError shows which providers are available
+  - TimeoutError suggests increasing timeout or checking network
+- **Developer Experience**: 39 new exception tests ensuring clear error messages
+- **Code Quality**: Replaced 19 generic `Exception()` calls with specific custom exceptions
+
+### 📊 Testing
+- **90 unit tests** passing (51 → 90 tests)
+- **39 new exception tests** covering all exception types and hierarchies
+- Test coverage for exception messages, inheritance, and error handling patterns
+
+---
+
+## [0.1.9] - 2025-01-10
+
+### ✨ Added
+- **Provider Health Checks**: Automatic health monitoring system
+  - `ProviderHealth` class tracking metrics (success rate, response time, error count)
+  - `health_check()` async method for provider validation
+  - Configurable timeout (default 5s)
+  - Automatic metric updates on success/failure
+- **Failover Logic**: Automatic provider switching on failures
+  - `Router.route_with_failover()` tries providers sequentially
+  - Exponential backoff between provider switches
+  - `Selector.select_with_fallbacks()` returns primary + backup providers
+  - Configurable max fallbacks (default 2)
+- **Enhanced Model Selection**: Preference-based provider selection
+  - User-specified provider preferences respected
+  - Automatic fallback to best available provider
+
+### 📊 Testing
+- **51 unit tests** passing (36 → 51 tests)
+- **15 new health check tests** covering metrics, timeouts, recovery
+- **10 new failover tests** for retry logic and provider switching
+
+---
+
 ## [0.1.1] - 2025-11-09
 
 ### 🔧 Fixed

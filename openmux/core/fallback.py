@@ -4,6 +4,7 @@ import logging
 from typing import Optional
 
 from ..providers.base import BaseProvider
+from ..utils.exceptions import ProviderError, ProviderUnavailableError
 
 
 logger = logging.getLogger(__name__)
@@ -44,7 +45,10 @@ class FallbackHandler:
         """
         if not self.has_fallback():
             logger.error("No fallback provider available")
-            raise Exception("No fallback provider configured")
+            raise ProviderUnavailableError(
+                "Fallback",
+                "No fallback provider configured (Ollama not available)"
+            )
         
         logger.info("Attempting fallback to Ollama")
         
@@ -54,4 +58,6 @@ class FallbackHandler:
             return response
         except Exception as e:
             logger.error(f"Fallback failed: {e}")
-            raise Exception(f"Fallback to Ollama failed: {e}")
+            if isinstance(e, ProviderError):
+                raise
+            raise ProviderError("Ollama", f"Fallback failed: {str(e)}")

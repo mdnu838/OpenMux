@@ -13,6 +13,10 @@
 secrets.json
 config/secrets.json
 
+# Serper API scripts and research tools
+serper/
+*.serper.json
+
 # =====================================
 # Python
 # =====================================
