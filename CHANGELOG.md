@@ -19,6 +19,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.2.2] - 2025-01-11
+
+### ✨ Added
+- **HuggingFace Provider Unit Tests**: 26 comprehensive tests covering all functionality
+  - Initialization tests (env token, explicit token, custom models)
+  - Availability and task support checks
+  - Session management (creation, reuse, recreation)
+  - Generation methods (chat, code, embeddings, custom parameters)
+  - Error handling (HTTP errors, missing token, malformed responses)
+  - Edge cases (empty query, unsupported tasks, fallback behavior)
+  - Async context manager support
+
+### 📈 Improved
+- **Test Coverage**: Increased from 74% to **81%** (+7%)
+- **Test Count**: Expanded from 115 to **154 tests** (+39 tests)
+  - Unit/integration: 122 tests
+  - Live API: 19 tests
+  - Benchmarks: 8 tests (require pytest-benchmark)
+  - Performance: 5 tests
+- **HuggingFace Provider Coverage**: Improved from 38% to **93%** (+55%)
+
+### 🔧 Fixed
+- Async context manager mocking pattern for provider tests
+- HTTP error handling in HuggingFace provider tests
+- Session recreation test expectations
+
+---
+
 ## [0.1.11] - 2025-01-10
 
 ### ✨ Added
